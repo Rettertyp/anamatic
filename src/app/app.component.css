@@ -1,0 +1,13 @@
+.wrapper {
+    margin-right: auto;
+    margin-left: auto;
+
+    max-width: 1000px;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: red;
+}
