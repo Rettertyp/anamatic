@@ -1,6 +1,6 @@
-<form (submit)="$event.preventDefault()">
+<form (submit)="$event.preventDefault()" class="form-wrapper">
     <mat-form-field appearance="fill">
         <mat-label>Eingabe</mat-label>
-        <input matInput [(ngModel)]="inputValue" placeholder="Eingabe">
+        <input matInput [(ngModel)]="inputValue" name="input" placeholder="" class="input-text">
     </mat-form-field>
 </form>

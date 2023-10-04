@@ -1,0 +1,32 @@
+.wrapper {
+  margin: 7px;
+  min-height: 60px;
+  border: 4px solid #ccc;
+  border-radius: 8px;
+  border-color: red;
+  height: 100%;
+}
+
+.wordbox {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wordbox-word {
+  min-width: 80px;
+  height: 40px;
+  margin: 10px;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.wordbox-word span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}

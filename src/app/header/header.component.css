@@ -1,18 +1,17 @@
 .container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .container > * {
-    flex: 1 0 100%;
-    max-width: 100%;
+  flex: 1 0 100%;
+  max-width: 100%;
 }
 
 .textbox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

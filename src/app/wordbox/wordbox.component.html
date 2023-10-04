@@ -1,0 +1,7 @@
+<div class="wrapper" [ngStyle]="getColorStyle()">
+    <div class="wordbox">
+        <div *ngFor="let word of wordlist" class="wordbox-word">
+            <span>{{ word }}</span>
+        </div>
+    </div>
+</div>
