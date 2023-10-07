@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WordCheckerService } from '../services/word-checker.service';
 
 @Component({
   selector: 'app-input',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class InputComponent {
   inputValue: string = '';
+
+  constructor(private readonly wordCheckerService: WordCheckerService) {}
 }

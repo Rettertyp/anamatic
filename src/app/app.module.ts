@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -30,6 +31,7 @@ import { CharacterService } from './services/character.service';
     BrowserAnimationsModule,
     FormsModule,
     MatInputModule,
+    HttpClientModule,
   ],
   providers: [CharacterService],
   bootstrap: [AppComponent],

@@ -4,22 +4,29 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class CharacterService {
-  characterList: string[] = [];
-  numberOfCharacters: number = 5;
+  private characterList: string[] = [];
+  private numberOfCharacters: number = 5;
 
   constructor() {
     this.characterList = this.generateCharacterList();
   }
 
+  /**
+   * Returns a copy of the current character list.
+   * @returns copy of the character list
+   */
   getCharacterList(): string[] {
-    return this.characterList;
+    return [...this.characterList];
   }
 
-  // function that generates a random list of uppercase characters, half of them are consonants, the other half are vowels
-  generateCharacterList(): string[] {
+  /**
+   * Returns a list of random uppercase characters, half of them consonants, half of them vowels.
+   * @returns list of random uppercase characters
+   */
+  private generateCharacterList(): string[] {
     const characterList: string[] = [];
 
-    const vowels: string[] = ['A', 'E', 'I', 'O', 'U', 'Y'];
+    const vowels: string[] = ['A', 'E', 'I', 'O', 'U'];
     const consonants: string[] = [
       'B',
       'C',
@@ -40,6 +47,7 @@ export class CharacterService {
       'V',
       'W',
       'X',
+      'Y',
       'Z',
     ];
 
