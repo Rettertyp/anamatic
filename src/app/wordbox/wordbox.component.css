@@ -3,7 +3,6 @@
   min-height: 60px;
   border: 4px solid #ccc;
   border-radius: 8px;
-  border-color: red;
   height: 100%;
 }
 
@@ -16,7 +15,6 @@
   min-width: 80px;
   height: 40px;
   margin: 10px;
-  background-color: #ccc;
   display: flex;
   align-items: center;
   justify-content: center;

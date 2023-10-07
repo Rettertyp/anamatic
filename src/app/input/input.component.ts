@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WordCheckerService } from '../services/word-checker.service';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-input',
@@ -9,5 +9,10 @@ import { WordCheckerService } from '../services/word-checker.service';
 export class InputComponent {
   inputValue: string = '';
 
-  constructor(private readonly wordCheckerService: WordCheckerService) {}
+  constructor(private readonly gameService: GameService) {}
+
+  onEnter(): void {
+    this.gameService.processInput(this.inputValue);
+    this.inputValue = '';
+  }
 }

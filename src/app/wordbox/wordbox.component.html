@@ -1,6 +1,6 @@
-<div class="wrapper" [ngStyle]="getColorStyle()">
+<div class="wrapper" [ngStyle]="getBorderColorStyle()">
     <div class="wordbox">
-        <div *ngFor="let word of wordlist" class="wordbox-word">
+        <div [@fadeInAndScale] *ngFor="let word of wordlist" class="wordbox-word" [ngStyle]="getBackgroundColorStyle()">
             <span>{{ word }}</span>
         </div>
     </div>

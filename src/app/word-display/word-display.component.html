@@ -1,11 +1,11 @@
 <div style="width: 100%;">
-    <app-wordbox color="blue"></app-wordbox>
+    <app-wordbox color="0,0,255" [wordlist]="pendingWords"></app-wordbox>
 </div>
 <div class="wrapper">
     <div style="width: 60%;">
-        <app-wordbox color="green"></app-wordbox>
+        <app-wordbox color="0,200,0" [wordlist]="correctWords"></app-wordbox>
     </div>
     <div style="width: 40%;">
-        <app-wordbox color="red"></app-wordbox>
+        <app-wordbox color="255,0,0" [wordlist]="wrongWords"></app-wordbox>
     </div>
 </div>
