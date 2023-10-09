@@ -10,6 +10,7 @@
   "affected": {
     "defaultBase": "main"
   },
+  "npmScope": "retter",
   "namedInputs": {
     "sharedGlobals": [],
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
