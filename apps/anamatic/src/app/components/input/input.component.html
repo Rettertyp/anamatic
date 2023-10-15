@@ -1,12 +1,7 @@
 <form (submit)="$event.preventDefault()" class="form-wrapper">
   <mat-form-field appearance="fill">
     <mat-label>Eingabe</mat-label>
-    <input
-      matInput
-      [(ngModel)]="inputValue"
-      (keyup.enter)="onEnter()"
-      name="input"
-      class="input-text"
-    />
+    <input matInput [(ngModel)]="inputValue" autocapitalize="none" (keyup.enter)="onEnter()" name="input"
+      class="input-text" />
   </mat-form-field>
 </form>
