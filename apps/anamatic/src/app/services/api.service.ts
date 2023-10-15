@@ -9,7 +9,6 @@ import { awakeAnswer, wordAnswer } from '../types';
 })
 export class ApiService {
     private readonly baseUrl = environment.production ? 'https://anamatic.onrender.com/' : '';
-    private readonly port = environment.production ? ':3000' : '';
 
     constructor(private readonly http: HttpClient) {}
 
@@ -19,7 +18,7 @@ export class ApiService {
      * @returns the response object from the API
      */
     getWord(word: string): Promise<wordAnswer> {
-        return lastValueFrom(this.http.get<wordAnswer>(`${this.baseUrl}/api/${word}${this.port}`));
+        return lastValueFrom(this.http.get<wordAnswer>(`${this.baseUrl}api/${word}`));
     }
 
     /**
@@ -27,6 +26,6 @@ export class ApiService {
      * @returns whether the server is awake
      */
     wakeUpServer(): Observable<awakeAnswer> {
-        return this.http.get<awakeAnswer>(`${this.baseUrl}/api/wake-up${this.port}`);
+        return this.http.get<awakeAnswer>(`${this.baseUrl}api/wake-up`);
     }
 }
