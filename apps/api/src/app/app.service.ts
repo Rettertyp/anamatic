@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { dwdsAnswer } from '../assets/types';
 import { lastValueFrom } from 'rxjs';
+import { awakeAnswer, wordAnswer } from 'src/types';
 
 @Injectable()
 export class AppService {
@@ -11,10 +12,14 @@ export class AppService {
 
     private readonly dwdsUrl = 'https://www.dwds.de/api/wb/snippet/';
 
-    async checkWord(word: string): Promise<boolean> {
+    async checkWord(word: string): Promise<wordAnswer> {
         const dwdsData: dwdsAnswer[] = (
             await lastValueFrom(this.httpService.get(this.dwdsUrl, { params: { q: word } }))
         ).data;
-        return dwdsData.length > 0;
+        return { wordExists: dwdsData.length > 0 };
+    }
+
+    wakeUpServer(): awakeAnswer {
+        return { awake: true };
     }
 }

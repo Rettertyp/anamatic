@@ -27,7 +27,7 @@ export class WordCheckerService {
         }
 
         // check the word in the DWDS API
-        const wordExists: boolean = await this.apiService.getWord(word);
+        const wordExists: boolean = (await this.apiService.getWord(word)).wordExists;
 
         return wordExists;
     }

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { environment } from '../environment/environment';
+import { awakeAnswer, wordAnswer } from '../types';
 
 @Injectable({
     providedIn: 'root',
@@ -17,7 +18,15 @@ export class ApiService {
      * @param word the word to check on the API
      * @returns the response object from the API
      */
-    getWord(word: string): Promise<boolean> {
-        return lastValueFrom(this.http.get<boolean>(`${this.baseUrl}/api/${word}${this.port}`));
+    getWord(word: string): Promise<wordAnswer> {
+        return lastValueFrom(this.http.get<wordAnswer>(`${this.baseUrl}/api/${word}${this.port}`));
+    }
+
+    /**
+     * Wakes up the server to prevent cold starts.
+     * @returns whether the server is awake
+     */
+    wakeUpServer(): Observable<awakeAnswer> {
+        return this.http.get<awakeAnswer>(`${this.baseUrl}/api/wake-up${this.port}`);
     }
 }
