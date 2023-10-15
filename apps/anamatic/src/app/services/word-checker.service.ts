@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CharacterService } from './character.service';
-import { dwdsAnswer } from '../types';
 import { ApiService } from './api.service';
 import { deleteFromArray } from '../util/deleteFromArray.util';
 

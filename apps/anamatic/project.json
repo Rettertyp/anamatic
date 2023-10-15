@@ -33,7 +33,13 @@
                             "maximumError": "4kb"
                         }
                     ],
-                    "outputHashing": "all"
+                    "outputHashing": "all",
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/anamatic/src/app/environment/environment.ts",
+                            "with": "apps/anamatic/src/app/environment/environment.prod.ts"
+                        }
+                    ]
                 },
                 "development": {
                     "buildOptimizer": false,

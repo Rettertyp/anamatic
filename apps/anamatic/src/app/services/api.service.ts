@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { dwdsAnswer } from '../types';
+import { environment } from '../environment/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApiService {
+    private readonly baseUrl = environment.production ? 'https://anamatic.onrender.com/' : '';
+    private readonly port = environment.production ? ':3000' : '';
+
     constructor(private readonly http: HttpClient) {}
 
     /**
@@ -15,6 +18,6 @@ export class ApiService {
      * @returns the response object from the API
      */
     getWord(word: string): Promise<boolean> {
-        return lastValueFrom(this.http.get<boolean>(`/api/${word}`));
+        return lastValueFrom(this.http.get<boolean>(`${this.baseUrl}/api/${word}${this.port}`));
     }
 }

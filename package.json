@@ -6,6 +6,7 @@
         "start": "concurrently --names \"Frontend,Backend\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run start:frontend\" \"npm run start:backend\" --prefix \"[{time} - {name}]\" --timestamp-format \"HH:mm:ss.SSS\"",
         "start:frontend": "nx serve anamatic",
         "start:backend": "nx serve api",
+        "server": "nx serve api:prodduction",
         "build:frontend": "nx build anamatic",
         "build:backend": "nx build api",
         "watch": "nx build --watch --configuration development",
