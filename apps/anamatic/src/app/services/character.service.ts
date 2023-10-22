@@ -5,10 +5,10 @@ import { Injectable } from '@angular/core';
 })
 export class CharacterService {
     private characterList: string[] = [];
-    private numberOfCharacters: number = 7;
+    private readonly numberOfCharacters: number = 10;
 
     constructor() {
-        this.characterList = this.generateCharacterList();
+        this.characterList = this.generateCharacterList(this.numberOfCharacters);
     }
 
     /**
@@ -20,52 +20,64 @@ export class CharacterService {
     }
 
     /**
-     * Returns a list of random uppercase characters, half of them consonants, half of them vowels.
+     * Returns a list of random uppercase characters, so that the probability of obtaining a char ist the same as the relative frequency in the german language.
      * @returns list of random uppercase characters
      */
-    private generateCharacterList(): string[] {
-        const characterList: string[] = [];
+    private generateCharacterList(numberOfChars: number): string[] {
+        const charProbMap = new Map<string, number>([
+            ['A', 558],
+            ['A', 54],
+            ['B', 196],
+            ['C', 316],
+            ['D', 498],
+            ['E', 1693],
+            ['F', 149],
+            ['G', 302],
+            ['H', 498],
+            ['I', 802],
+            ['J', 24],
+            ['K', 132],
+            ['L', 360],
+            ['M', 255],
+            ['N', 1053],
+            ['O', 224],
+            ['Ö', 30],
+            ['P', 67],
+            ['Q', 2],
+            ['R', 689],
+            ['S', 700],
+            ['T', 579],
+            ['U', 383],
+            ['Ü', 65],
+            ['V', 84],
+            ['W', 178],
+            ['X', 5],
+            ['Y', 5],
+            ['Z', 121],
+        ]);
 
-        const vowels: string[] = ['A', 'E', 'I', 'O', 'U'];
-        const consonants: string[] = [
-            'B',
-            'C',
-            'D',
-            'F',
-            'G',
-            'H',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-        ];
-
-        for (let i = 0; i < this.numberOfCharacters; i++) {
-            const randomConsonant: string = consonants[Math.floor(Math.random() * consonants.length)];
-            const randomVowel: string = vowels[Math.floor(Math.random() * vowels.length)];
-            characterList.push(randomConsonant);
-            characterList.push(randomVowel);
+        // add up the probabilities
+        let probSum: number = 0;
+        for (const prob of charProbMap.values()) {
+            probSum += prob;
         }
 
-        // shuffle the list
-        for (let i = characterList.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * i);
-            const temp = characterList[i];
-            characterList[i] = characterList[j];
-            characterList[j] = temp;
+        const resChars: string[] = [];
+
+        outerCharLoop: for (let i = 0; i < numberOfChars; i++) {
+            const threshold: number = Math.floor(Math.random() * probSum);
+
+            // look which char should get returned based on the threshold
+            let cumulativeSum: number = 0;
+            for (const [char, prob] of charProbMap) {
+                cumulativeSum += prob;
+                if (threshold < cumulativeSum) {
+                    resChars.push(char);
+                    continue outerCharLoop;
+                }
+            }
         }
 
-        return characterList;
+        return resChars;
     }
 }

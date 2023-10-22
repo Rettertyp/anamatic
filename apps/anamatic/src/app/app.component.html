@@ -1,10 +1,8 @@
 <div class="wrapper">
   <app-header></app-header>
-  <div *ngIf="!serverIsAwake">
-    <app-loading></app-loading>
+  <div *ngIf="!serverIsAwake" style="text-align: center;">
+    Der Wort-Checker Server startet noch, die Worte werden länger in der blauen Box bleiben.
   </div>
-  <div *ngIf="serverIsAwake">
-    <app-input></app-input>
-    <app-word-display></app-word-display>
-  </div>
+  <app-input></app-input>
+  <app-word-display></app-word-display>
 </div>
