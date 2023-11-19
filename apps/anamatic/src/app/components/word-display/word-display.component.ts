@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WordListService } from '../../services/word-list.service';
+import { CorrectWord } from '../../util/freqWord.util';
+import { Word } from '../../util/word.util';
 
 @Component({
     selector: 'app-word-display',
@@ -7,9 +9,9 @@ import { WordListService } from '../../services/word-list.service';
     styleUrls: ['./word-display.component.css'],
 })
 export class WordDisplayComponent implements OnInit {
-    pendingWords: string[] = [];
-    correctWords: string[] = [];
-    wrongWords: string[] = [];
+    pendingWords: Word[] = [];
+    correctWords: CorrectWord[] = [];
+    wrongWords: Word[] = [];
 
     constructor(private readonly wordListService: WordListService) {}
 
