@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CharacterService } from './character.service';
 import { ApiService } from './api.service';
 import { deleteFromArray } from '../util/deleteFromArray.util';
+import { wordAnswer } from '../types';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,7 @@ export class WordCheckerService {
      * @param word the word to check
      * @returns
      */
-    async checkWord(word: string): Promise<boolean> {
+    async checkWord(word: string): Promise<wordAnswer> {
         const charList: string[] = this.characterService.getCharacterList();
 
         // check whether the word is made up of legal characters
@@ -23,12 +24,10 @@ export class WordCheckerService {
                 deleteFromArray(charList, char);
             } else if (charList.includes(char.toUpperCase())) {
                 deleteFromArray(charList, char.toUpperCase());
-            } else return false;
+            } else return { wordExists: false };
         }
 
         // check the word in the DWDS API
-        const wordExists: boolean = (await this.apiService.getWord(word)).wordExists;
-
-        return wordExists;
+        return await this.apiService.getWord(word);
     }
 }

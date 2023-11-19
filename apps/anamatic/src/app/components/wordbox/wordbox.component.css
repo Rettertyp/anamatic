@@ -1,30 +1,32 @@
 .wrapper {
-  margin: 7px;
-  min-height: 60px;
-  border: 4px solid #ccc;
-  border-radius: 8px;
-  height: 100%;
+    margin: 7px;
+    min-height: 60px;
+    border: 4px solid #ccc;
+    border-radius: 8px;
+    height: 100%;
 }
 
 .wordbox {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 
 .wordbox-word {
-  min-width: 80px;
-  height: 40px;
-  margin: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
+    min-width: 80px;
+    height: 40px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
 }
 
 .wordbox-word span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-  margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
 }

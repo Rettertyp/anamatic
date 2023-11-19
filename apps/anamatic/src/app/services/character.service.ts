@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 
+enum CharStrategy {
+    Dice,
+    CharProb,
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -8,7 +13,7 @@ export class CharacterService {
     private readonly numberOfCharacters: number = 10;
 
     constructor() {
-        this.characterList = this.generateCharacterList(this.numberOfCharacters);
+        this.characterList = this.generateCharacterList(this.numberOfCharacters, CharStrategy.Dice);
     }
 
     /**
@@ -20,10 +25,49 @@ export class CharacterService {
     }
 
     /**
-     * Returns a list of random uppercase characters, so that the probability of obtaining a char ist the same as the relative frequency in the german language.
+     * Returns a list of random uppercase characters, chosen by the given strategy.
+     * @param numberOfChars number of characters to generate
+     * @param strategy strategy to use
      * @returns list of random uppercase characters
      */
-    private generateCharacterList(numberOfChars: number): string[] {
+    private generateCharacterList(numberOfChars: number, strategy: CharStrategy): string[] {
+        switch (strategy) {
+            case CharStrategy.Dice:
+                return this.generateCharacterListByDice();
+            case CharStrategy.CharProb:
+                return this.generateCharacterListByCharProb(numberOfChars);
+        }
+    }
+
+    /**
+     * Returns a list of random uppercase characters, by rolling 9 dice.
+     * @returns list of random uppercase characters
+     */
+    private generateCharacterListByDice(): string[] {
+        const dice: string[][] = [
+            ['E', 'E', 'I', 'I', 'Ä', 'O'],
+            ['R', 'N', 'E', 'M', 'S', 'T'],
+            ['D', 'I', 'F', 'E', 'Ü', 'H'],
+            ['E', 'E', 'U', 'P', 'T', 'Ö'],
+            ['E', 'E', 'Y', 'E', 'A', 'A'],
+            ['G', 'N', 'N', 'D', 'T', 'R'],
+            ['L', 'N', 'Q', 'U', 'B', 'R'],
+            ['X', 'W', 'Z', 'K', 'J', 'V'],
+            ['A', 'C', 'I', 'L', 'O', 'S'],
+        ];
+
+        const res = dice.map((die) => die[Math.floor(Math.random() * die.length)]);
+        if (res.includes('Q')) res.push('U');
+
+        return res;
+    }
+
+    /**
+     * Returns a list of random uppercase characters, so that the probability of obtaining a char ist the same as the relative frequency in the german language.
+     * @param numberOfChars number of characters to generate
+     * @returns list of random uppercase characters
+     */
+    private generateCharacterListByCharProb(numberOfChars: number): string[] {
         const charProbMap = new Map<string, number>([
             ['A', 558],
             ['A', 54],
