@@ -12,7 +12,7 @@ export class InputComponent {
     constructor(private readonly gameService: GameService) {}
 
     onEnter(): void {
-        this.gameService.processInput(this.inputValue);
+        this.gameService.processInput(this.inputValue.trim());
         this.inputValue = '';
     }
 }
