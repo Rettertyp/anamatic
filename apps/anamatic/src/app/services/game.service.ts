@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { wordAnswer } from '../types';
+import { wordAnswer } from '@retter/api-interfaces';
 import { ScoreService } from './score.service';
 import { WordCheckerService } from './word-checker.service';
 import { WordListService } from './word-list.service';

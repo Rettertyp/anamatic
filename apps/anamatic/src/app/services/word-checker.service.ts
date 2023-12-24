@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { wordAnswer } from '@retter/api-interfaces';
+import { checkWordConsistsOfChars } from '@retter/util';
 import { CharacterService } from './character.service';
 import { ApiService } from './api.service';
-import { deleteFromArray } from '../util/deleteFromArray.util';
-import { wordAnswer } from '../types';
 
 @Injectable({
     providedIn: 'root',
@@ -18,13 +18,10 @@ export class WordCheckerService {
     async checkWord(word: string): Promise<wordAnswer> {
         const charList: string[] = this.characterService.getCharacterList();
 
-        // check whether the word is made up of legal characters
-        for (const char of word) {
-            if (charList.includes(char)) {
-                deleteFromArray(charList, char);
-            } else if (charList.includes(char.toUpperCase())) {
-                deleteFromArray(charList, char.toUpperCase());
-            } else return { wordExists: false };
+        const wordConsistsOfChars = checkWordConsistsOfChars(word, charList);
+
+        if (!wordConsistsOfChars) {
+            return { wordExists: false };
         }
 
         // check the word in the DWDS API

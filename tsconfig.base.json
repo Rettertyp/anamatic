@@ -9,9 +9,12 @@
         "target": "ES2022",
         "module": "ES2022",
         "lib": ["ES2022", "dom"],
-        "baseUrl": "./",
+        "skipLibCheck": true,
+        "baseUrl": ".",
         "paths": {
-            "@retter/shared-types": ["libs/src/index.ts"]
+            "@retter/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+            "@retter/util": ["libs/util/src/index.ts"]
         }
-    }
+    },
+    "exclude": ["node_modules", "tmp", "dist"]
 }

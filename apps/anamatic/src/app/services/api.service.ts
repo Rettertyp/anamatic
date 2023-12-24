@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, lastValueFrom } from 'rxjs';
 import { environment } from '../environment/environment';
-import { awakeAnswer, wordAnswer } from '../types';
+import { awakeAnswer, wordAnswer } from '@retter/api-interfaces';
 
 @Injectable({
     providedIn: 'root',
