@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { GameDto } from '@retter/api-interfaces';
 import { User } from '../auth/user.decorator';
 import { RequestUser } from '../user/user.schema';
@@ -20,5 +20,11 @@ export class GameController {
     @Delete(':gameId')
     deleteGame(@User() user: RequestUser, @Param('gameId', ObjectIdValidationPipe) gameId: string) {
         return this.gameService.delete(user, gameId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('best')
+    getBestGames(@User() user: RequestUser) {
+        return this.gameService.findBest(user);
     }
 }

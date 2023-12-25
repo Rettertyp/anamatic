@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -16,6 +17,15 @@ import { WordDisplayComponent } from './components/word-display/word-display.com
 import { CharacterService } from './services/character.service';
 import { LoadingComponent } from './components/loading/loading.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { GameComponent } from './components/game/game.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { PersonalComponent } from './components/personal/personal.component';
+
+export const routes: Routes = [
+    { path: '', component: MenuComponent },
+    { path: 'game', component: GameComponent },
+    { path: 'personal', component: PersonalComponent },
+];
 
 @NgModule({
     declarations: [
@@ -28,6 +38,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         WordDisplayComponent,
         SpinnerComponent,
         LoadingComponent,
+        GameComponent,
+        MenuComponent,
+        PersonalComponent,
     ],
     imports: [
         BrowserModule,
@@ -36,6 +49,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         FormsModule,
         MatInputModule,
         HttpClientModule,
+        RouterModule,
     ],
     providers: [CharacterService],
     bootstrap: [AppComponent],

@@ -8,6 +8,8 @@ import { GameIdDto } from '@retter/api-interfaces';
 
 @Injectable()
 export class GameService {
+    private readonly N_BEST = 10;
+
     constructor(@InjectModel(Game.name) private readonly gameModel: Model<Game>) {}
 
     /**
@@ -95,6 +97,15 @@ export class GameService {
         game.totalScore += points;
 
         await game.save();
+    }
+
+    /**
+     * Finds the best games for a user.
+     * @param user The user to find the best games for.
+     * @returns A promise that resolves to an array of GameDocument objects.
+     */
+    async findBest(user: RequestUser): Promise<GameDocument[]> {
+        return this.gameModel.find({ user: user._id }).sort({ totalScore: -1 }).limit(this.N_BEST).exec();
     }
 
     /**

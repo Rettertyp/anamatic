@@ -8,13 +8,10 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent implements OnInit {
     title = 'anamatic';
-    serverIsAwake = false;
 
     constructor(private readonly apiService: ApiService) {}
 
     ngOnInit() {
-        this.apiService.wakeUpServer().subscribe((data) => {
-            this.serverIsAwake = data.awake;
-        });
+        this.apiService.wakeUpServer();
     }
 }

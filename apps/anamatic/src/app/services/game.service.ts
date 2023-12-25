@@ -28,9 +28,8 @@ export class GameService {
         this.wordListService.removeFromPending(input);
 
         if (wordData.wordExists) {
-            const points = this.calculatePoints(input.length, wordData.wordFrequency!);
-            this.wordListService.addToCorrect(input, points);
-            this.scoreService.addPoints(points);
+            this.wordListService.addToCorrect(input, wordData.points!);
+            this.scoreService.addPoints(wordData.points!);
         } else {
             this.wordListService.addToWrong(input);
         }
