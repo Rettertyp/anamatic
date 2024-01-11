@@ -1,27 +1,49 @@
 # Anamatic
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.5.
+Welcome to Anamatic, a game where the player has to find as many German words that consist of the given characters as possible. There is no time limit.
+The number of points a word is worth depends on two factors: The length of the word, and its rarity.
 
-## Development server
+Words and their rarity are checked using the [DWDS API](https://www.dwds.de/d/api).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Play Online
 
-## Code scaffolding
+You can play the game online at [https://rettertyp.github.io/play-anamatic/](https://rettertyp.github.io/play-anamatic/). Please note that the backend uses a free hosting provider, so it may take a while to start and the words might stay in the blue "pending" box for a bit.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Development
 
-## Build
+### Requirements
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+In order to run the dev-environment, the following requirements should be installed:
 
-## Running unit tests
+- [NodeJS](https://nodejs.org/en/download/)
+- [npm](https://www.npmjs.com/get-npm)
+- [ESLint](https://eslint.org/)
+- [prettier](https://prettier.io/)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Setup
 
-## Running end-to-end tests
+1. Install all dependencies:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```sh
+npm i
+```
 
-## Further help
+2. Start the dev-environment (watches for file changes):
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- To serve both backend and frontend concurrently:
+
+```sh
+npm run start
+```
+
+- To serve only the frontend:
+
+```sh
+npm run start:frontend
+```
+
+- To serve only the backend:
+
+```sh
+npm run start:backend
+```
