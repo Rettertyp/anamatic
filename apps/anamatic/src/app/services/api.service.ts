@@ -1,19 +1,23 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, lastValueFrom, of, share, tap } from 'rxjs';
 import { environment } from '../environment/environment';
-import { awakeAnswer, wordAnswer } from '@retter/api-interfaces';
+import { LoginResponseDto, awakeAnswer, wordAnswer } from '@retter/api-interfaces';
+import { StorageService } from './storage.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApiService {
     private readonly baseUrl = environment.production ? 'https://anamatic.onrender.com/api/' : '/api/';
+    private readonly headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+    });
 
     private apiIsAwake = false;
     private wakeUpObservable: Observable<awakeAnswer> | null = null;
 
-    constructor(private readonly http: HttpClient) {}
+    constructor(private readonly http: HttpClient, private readonly storageService: StorageService) {}
 
     /**
      * Checks a word on the DWDS API and returns the servers response.
@@ -21,7 +25,12 @@ export class ApiService {
      * @returns the response object from the API
      */
     getWord(word: string): Promise<wordAnswer> {
-        return lastValueFrom(this.http.get<wordAnswer>(`${this.baseUrl}word/${word}`));
+        return lastValueFrom(
+            this.http.get<wordAnswer>(`${this.baseUrl}word/${word}`, {
+                headers: this.headers,
+                withCredentials: this.storageService.isLoggedIn(),
+            })
+        );
     }
 
     /**
@@ -47,5 +56,29 @@ export class ApiService {
             }),
             share()
         );
+    }
+
+    /**
+     * Logs in the user.
+     * @param username the username of the user
+     * @param password the password of the user
+     * @returns nothing, the
+     */
+    async login(username: string, password: string): Promise<LoginResponseDto> {
+        return (
+            await lastValueFrom(
+                this.http.post<HttpResponse<LoginResponseDto>>(
+                    `${this.baseUrl}auth/login`,
+                    {
+                        username,
+                        password,
+                    },
+                    {
+                        headers: this.headers,
+                        withCredentials: this.storageService.isLoggedIn(),
+                    }
+                )
+            )
+        ).body as LoginResponseDto;
     }
 }

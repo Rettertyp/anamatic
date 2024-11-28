@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, provideRouter } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -20,11 +20,12 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GameComponent } from './components/game/game.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { PersonalComponent } from './components/personal/personal.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     { path: '', component: MenuComponent },
     { path: 'game', component: GameComponent },
-    { path: 'personal', component: PersonalComponent },
+    { path: 'personal', component: PersonalComponent, children: [] },
 ];
 
 @NgModule({
@@ -41,6 +42,7 @@ export const routes: Routes = [
         GameComponent,
         MenuComponent,
         PersonalComponent,
+        LoginComponent,
     ],
     imports: [
         BrowserModule,
@@ -51,7 +53,7 @@ export const routes: Routes = [
         HttpClientModule,
         RouterModule,
     ],
-    providers: [CharacterService],
+    providers: [CharacterService, provideRouter(routes)],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

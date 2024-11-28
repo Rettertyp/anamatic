@@ -5,6 +5,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { Request, Response } from 'express';
 import { PublicUser } from '../user/user.schema';
 import { JwtRefreshGuard } from './jwt-refresh.guard';
+import { LoginResponseDto } from '@retter/api-interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
         res.cookie(REFRESH_COOKIE_NAME, refreshToken, {
             httpOnly: true, // inaccessible to JS, help prevent XSS
         });
-        res.json({ access_token: accessToken });
+        res.json({ access_token: accessToken } as LoginResponseDto);
     }
 
     @Public()
