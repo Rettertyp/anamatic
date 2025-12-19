@@ -32,7 +32,7 @@ export class WordCheckerService {
         }
 
         // check the word in the DWDS API
-        if (this.authService.isLoggedIn) {
+        if (this.authService.isLoggedIn()) {
             const gameId = this.gameSessionService.gameId;
             if (gameId) {
                 return await this.apiService.getWordForGame(word, gameId);

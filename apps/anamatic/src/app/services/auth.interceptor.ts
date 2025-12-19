@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    HttpErrorResponse,
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { BehaviorSubject, catchError, filter, from, Observable, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -29,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 // Avoid refresh loops on auth endpoints.
                 if (
                     err.status !== 401 ||
-                    !this.authService.isLoggedIn ||
+                    !this.authService.isLoggedIn() ||
                     authReq.url.includes('/auth/login') ||
                     authReq.url.includes('/auth/refresh') ||
                     authReq.url.includes('/auth/logout')
@@ -56,9 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     }),
                     catchError((refreshErr) => {
                         this.isRefreshing = false;
-                        return from(this.authService.logout()).pipe(
-                            switchMap(() => throwError(() => refreshErr))
-                        );
+                        return from(this.authService.logout()).pipe(switchMap(() => throwError(() => refreshErr)));
                     })
                 );
             })

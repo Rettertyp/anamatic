@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 import { deleteWordFromArray } from '../util/deleteWordFromArray.util';
 import { CorrectWord } from '../util/freqWord.util';
 import { Word } from '../util/word.util';
@@ -8,19 +7,9 @@ import { Word } from '../util/word.util';
     providedIn: 'root',
 })
 export class WordListService {
-    private pendingWordsSubject = new BehaviorSubject<Word[]>([]);
-    private correctWordsSubject = new BehaviorSubject<CorrectWord[]>([]);
-    private wrongWordsSubject = new BehaviorSubject<Word[]>([]);
-
-    get pendingWords$(): Observable<Word[]> {
-        return this.pendingWordsSubject.asObservable();
-    }
-    get correctWords$(): Observable<CorrectWord[]> {
-        return this.correctWordsSubject.asObservable();
-    }
-    get wrongWords$(): Observable<Word[]> {
-        return this.wrongWordsSubject.asObservable();
-    }
+    pendingWords = signal<Word[]>([]);
+    correctWords = signal<CorrectWord[]>([]);
+    wrongWords = signal<Word[]>([]);
 
     /**
      * Checks whether a word already exists in one of the lists.
@@ -28,9 +17,9 @@ export class WordListService {
      */
     alreadyExists(word: string): boolean {
         const allWords: string[] = [
-            ...this.pendingWordsSubject.value.map((word) => word.word),
-            ...this.correctWordsSubject.value.map((word) => word.word),
-            ...this.wrongWordsSubject.value.map((word) => word.word),
+            ...this.pendingWords().map((word) => word.word),
+            ...this.correctWords().map((word) => word.word),
+            ...this.wrongWords().map((word) => word.word),
         ];
         return allWords.includes(word);
     }
@@ -40,7 +29,7 @@ export class WordListService {
      * @param word the word to add to the pending list
      */
     addToPending(word: string): void {
-        this.pendingWordsSubject.next([...this.pendingWordsSubject.value, new Word(word)]);
+        this.pendingWords.update((words) => [...words, new Word(word)]);
     }
 
     /**
@@ -48,9 +37,11 @@ export class WordListService {
      * @param word the word to remove from the pending list
      */
     removeFromPending(word: string): void {
-        const next = [...this.pendingWordsSubject.value];
-        deleteWordFromArray(next, word);
-        this.pendingWordsSubject.next(next);
+        this.pendingWords.update((words) => {
+            const next = [...words];
+            deleteWordFromArray(next, word);
+            return next;
+        });
     }
 
     /**
@@ -58,7 +49,7 @@ export class WordListService {
      * @param word the word to add to the correct list
      */
     addToCorrect(word: string, freq: number): void {
-        this.correctWordsSubject.next([...this.correctWordsSubject.value, new CorrectWord(word, freq)]);
+        this.correctWords.update((words) => [...words, new CorrectWord(word, freq)]);
     }
 
     /**
@@ -66,18 +57,18 @@ export class WordListService {
      * @param word the word to add to the wrong list
      */
     addToWrong(word: string): void {
-        this.wrongWordsSubject.next([...this.wrongWordsSubject.value, new Word(word)]);
+        this.wrongWords.update((words) => [...words, new Word(word)]);
     }
 
     resetAll(): void {
-        this.pendingWordsSubject.next([]);
-        this.correctWordsSubject.next([]);
-        this.wrongWordsSubject.next([]);
+        this.pendingWords.set([]);
+        this.correctWords.set([]);
+        this.wrongWords.set([]);
     }
 
     setCorrectWords(words: Array<{ word: string; points: number }>): void {
-        this.pendingWordsSubject.next([]);
-        this.wrongWordsSubject.next([]);
-        this.correctWordsSubject.next(words.map((w) => new CorrectWord(w.word, w.points)));
+        this.pendingWords.set([]);
+        this.wrongWords.set([]);
+        this.correctWords.set(words.map((w) => new CorrectWord(w.word, w.points)));
     }
 }

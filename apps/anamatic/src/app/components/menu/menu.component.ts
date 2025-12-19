@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class MenuComponent {
     constructor(private readonly authService: AuthService, private readonly router: Router) {
-        if (this.authService.isLoggedIn) {
+        if (this.authService.isLoggedIn()) {
             this.router.navigate(['/personal']);
         }
     }

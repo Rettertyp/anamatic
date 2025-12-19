@@ -17,7 +17,7 @@ export class InputComponent {
     constructor(private readonly gameService: GameService) {}
 
     async onEnter(): Promise<void> {
-        await this.gameService.processInput(this.inputValue.trim());
+        void this.gameService.processInput(this.inputValue.trim());
         this.inputValue = '';
     }
 }

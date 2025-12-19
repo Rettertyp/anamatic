@@ -33,7 +33,7 @@ export class PersonalComponent implements OnInit {
     ) {}
 
     async ngOnInit(): Promise<void> {
-        if (!this.authService.isLoggedIn) {
+        if (!this.authService.isLoggedIn()) {
             await this.router.navigate(['/']);
             return;
         }

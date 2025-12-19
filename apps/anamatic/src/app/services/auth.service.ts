@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
 import { ApiService } from './api.service';
 import { StorageService } from './storage.service';
 
@@ -7,15 +6,9 @@ import { StorageService } from './storage.service';
     providedIn: 'root',
 })
 export class AuthService {
-    private readonly loggedInSubject = new BehaviorSubject<boolean>(this.storageService.isLoggedIn());
+    private loggedInSignal = signal<boolean>(this.storageService.isLoggedIn());
 
-    get loggedIn$(): Observable<boolean> {
-        return this.loggedInSubject.asObservable();
-    }
-
-    get isLoggedIn(): boolean {
-        return this.storageService.isLoggedIn();
-    }
+    isLoggedIn = computed(() => this.loggedInSignal());
 
     constructor(private readonly apiService: ApiService, private readonly storageService: StorageService) {}
 
@@ -27,13 +20,13 @@ export class AuthService {
     async login(username: string, password: string): Promise<void> {
         const res = await this.apiService.login(username, password);
         this.storageService.saveUser({ access_token: res.access_token });
-        this.loggedInSubject.next(true);
+        this.loggedInSignal.set(true);
     }
 
     async refreshAccessToken(): Promise<string> {
         const res = await this.apiService.refresh();
         this.storageService.saveUser({ access_token: res.access_token });
-        this.loggedInSubject.next(true);
+        this.loggedInSignal.set(true);
         return res.access_token;
     }
 
@@ -44,6 +37,6 @@ export class AuthService {
             // best-effort
         }
         this.storageService.clean();
-        this.loggedInSubject.next(false);
+        this.loggedInSignal.set(false);
     }
 }

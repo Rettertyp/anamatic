@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScoreService } from '../../services/score.service';
 
@@ -9,12 +9,8 @@ import { ScoreService } from '../../services/score.service';
     templateUrl: './score-display.component.html',
     styleUrls: ['./score-display.component.css'],
 })
-export class ScoreDisplayComponent implements OnInit {
-    score: number = 0;
+export class ScoreDisplayComponent {
+    score = this.scoreService.currentScore;
 
     constructor(private readonly scoreService: ScoreService) {}
-
-    ngOnInit(): void {
-        this.scoreService.currentScore$.subscribe((newScore) => (this.score = newScore));
-    }
 }

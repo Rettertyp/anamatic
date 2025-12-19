@@ -36,7 +36,7 @@ export class GameComponent implements OnInit {
     async ngOnInit() {
         const gameId = this.route.snapshot.paramMap.get('gameId');
 
-        if (this.authService.isLoggedIn) {
+        if (this.authService.isLoggedIn()) {
             if (!gameId) {
                 await this.router.navigate(['/personal']);
                 return;
