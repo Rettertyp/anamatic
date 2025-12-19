@@ -4,7 +4,7 @@ import { Observable, lastValueFrom, of, share, tap } from 'rxjs';
 import { environment } from '../environment/environment';
 import {
     GameDetailDto,
-    GameDto,
+    NewGameDto,
     GameIdDto,
     GameListItemDto,
     LoginResponseDto,
@@ -120,14 +120,10 @@ export class ApiService {
 
     async createGame(characters: string[]): Promise<GameIdDto> {
         return lastValueFrom(
-            this.http.post<GameIdDto>(
-                `${this.baseUrl}game`,
-                { characters } as GameDto,
-                {
-                    headers: this.headers,
-                    withCredentials: true,
-                }
-            )
+            this.http.post<GameIdDto>(`${this.baseUrl}game`, { characters } as NewGameDto, {
+                headers: this.headers,
+                withCredentials: true,
+            })
         );
     }
 

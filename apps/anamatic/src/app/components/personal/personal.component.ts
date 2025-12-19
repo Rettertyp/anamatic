@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -18,8 +18,8 @@ import { WordListService } from '../../services/word-list.service';
     styleUrl: './personal.component.css',
 })
 export class PersonalComponent implements OnInit {
-    lastGames: GameListItemDto[] = [];
-    bestGames: GameListItemDto[] = [];
+    lastGames: GameListItemDto[] | undefined = undefined;
+    bestGames: GameListItemDto[] | undefined = undefined;
 
     constructor(
         private readonly apiService: ApiService,
@@ -28,7 +28,8 @@ export class PersonalComponent implements OnInit {
         private readonly gameSessionService: GameSessionService,
         private readonly scoreService: ScoreService,
         private readonly wordListService: WordListService,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly cdr: ChangeDetectorRef
     ) {}
 
     async ngOnInit(): Promise<void> {
@@ -42,8 +43,10 @@ export class PersonalComponent implements OnInit {
 
     async reloadLists(): Promise<void> {
         const [last, best] = await Promise.all([this.apiService.getLastGames(), this.apiService.getBestGames()]);
+        console.log('Loaded last games');
         this.lastGames = last;
         this.bestGames = best;
+        this.cdr.detectChanges();
     }
 
     async newGame(): Promise<void> {
@@ -57,6 +60,7 @@ export class PersonalComponent implements OnInit {
 
     async resumeGame(gameId: string): Promise<void> {
         const game: GameDetailDto = await this.apiService.getGame(gameId);
+        console.log(game);
         this.characterService.setCharacterList(game.characters);
         this.gameSessionService.setGameId(game._id);
         this.wordListService.setCorrectWords(game.words);

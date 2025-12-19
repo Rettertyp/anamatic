@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { GameDetailDto, GameDto, GameListItemDto } from '@retter/api-interfaces';
+import { GameDetailDto, NewGameDto, GameListItemDto } from '@retter/api-interfaces';
 import { User } from '../auth/user.decorator';
 import { RequestUser } from '../user/user.schema';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -12,7 +12,7 @@ export class GameController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    createGame(@User() user: RequestUser, @Body() gameDto: GameDto) {
+    createGame(@User() user: RequestUser, @Body() gameDto: NewGameDto) {
         return this.gameService.create(user, gameDto.characters);
     }
 
@@ -33,7 +33,7 @@ export class GameController {
                         characters: g.characters,
                         totalScore: g.totalScore,
                         wordsCount: g.words.length,
-                    }) as GameListItemDto
+                    } as GameListItemDto)
             )
         );
     }
@@ -49,7 +49,7 @@ export class GameController {
                         characters: g.characters,
                         totalScore: g.totalScore,
                         wordsCount: g.words.length,
-                    }) as GameListItemDto
+                    } as GameListItemDto)
             )
         );
     }

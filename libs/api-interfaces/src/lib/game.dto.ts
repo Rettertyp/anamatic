@@ -1,8 +1,8 @@
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsString, Length } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsMongoId, IsString, Length } from 'class-validator';
 
 export const nChars = 9;
 
-export class GameDto {
+export class NewGameDto {
     @IsArray()
     @ArrayMinSize(nChars)
     @ArrayMaxSize(nChars)
@@ -12,8 +12,7 @@ export class GameDto {
 }
 
 export class GameIdDto {
-    @IsString()
-    @Length(24, 24)
+    @IsMongoId()
     _id: string;
 }
 
@@ -25,8 +24,7 @@ export class CorrectWordDto {
     points: number;
 }
 
-/** Lightweight game data for lists (best/last). */
-export class GameListItemDto extends GameIdDto {
+class GameDto extends GameIdDto {
     @IsArray()
     @ArrayMinSize(nChars)
     @ArrayMaxSize(nChars)
@@ -35,20 +33,14 @@ export class GameListItemDto extends GameIdDto {
     characters: string[];
 
     totalScore: number;
+}
 
+/** Lightweight game data for lists (best/last). */
+export class GameListItemDto extends GameDto {
     wordsCount: number;
 }
 
 /** Full game state used to resume a game. */
-export class GameDetailDto extends GameIdDto {
-    @IsArray()
-    @ArrayMinSize(nChars)
-    @ArrayMaxSize(nChars)
-    @IsString({ each: true })
-    @Length(1, 1, { each: true })
-    characters: string[];
-
+export class GameDetailDto extends GameDto {
     words: CorrectWordDto[];
-
-    totalScore: number;
 }

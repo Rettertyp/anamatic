@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WordListService } from '../../services/word-list.service';
 import { CorrectWord } from '../../util/freqWord.util';
@@ -17,17 +17,20 @@ export class WordDisplayComponent implements OnInit {
     correctWords: CorrectWord[] = [];
     wrongWords: Word[] = [];
 
-    constructor(private readonly wordListService: WordListService) {}
+    constructor(private readonly wordListService: WordListService, private readonly cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.wordListService.pendingWords$.subscribe((newWords) => {
             this.pendingWords = newWords;
+            this.cdr.detectChanges();
         });
         this.wordListService.correctWords$.subscribe((newWords) => {
             this.correctWords = newWords;
+            this.cdr.detectChanges();
         });
         this.wordListService.wrongWords$.subscribe((newWords) => {
             this.wrongWords = newWords;
+            this.cdr.detectChanges();
         });
     }
 }

@@ -9,7 +9,7 @@ import dbConfig from './db.config';
         MongooseModule.forRootAsync({
             imports: [ConfigModule.forFeature(dbConfig)],
             useFactory: async (dbCfg: ConfigType<typeof dbConfig>) => ({
-                uri: `mongodb+srv://${dbCfg.user}:${dbCfg.password}@${dbCfg.host}/${dbCfg.database}`,
+                uri: dbCfg.uri,
             }),
             inject: [dbConfig.KEY],
         }),
