@@ -2,4 +2,12 @@
   <div class="textbox">
     <h1 routerLink="/">Anamatic</h1>
   </div>
+
+  <div class="top-right">
+    @if (!(authService.loggedIn$ | async)) {
+      <button mat-raised-button color="primary" routerLink="/login">Login</button>
+    } @else {
+      <button mat-raised-button color="primary" routerLink="/personal">Profil</button>
+    }
+  </div>
 </div>

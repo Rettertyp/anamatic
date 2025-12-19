@@ -39,4 +39,8 @@ export class ScoreService {
   reset(): void {
     this._currentScore.next(0);
   }
+
+  setScore(score: number): void {
+    this._currentScore.next(score);
+  }
 }

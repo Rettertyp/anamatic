@@ -1,1 +1,40 @@
-<p>personal works!</p>
+<div class="wrapper">
+	<p style="text-align: center;">Willkommen zurück!</p>
+
+	<div class="button-wrapper" style="text-align: center;">
+		<button class="button play-button" mat-raised-button color="primary" (click)="newGame()">Neues Spiel</button>
+		<button class="button login-button" mat-raised-button color="primary" (click)="logout()">Logout</button>
+	</div>
+
+	<div style="margin-top: 20px;">
+		<h3 style="text-align: center;">Letzte 3 Spiele</h3>
+		@if (lastGames.length === 0) {
+			<p style="text-align: center;">Keine Spiele vorhanden.</p>
+		} @else {
+			<div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+				@for (g of lastGames; track g._id) {
+					<div style="width: 320px; display: flex; justify-content: space-between; gap: 8px;">
+						<button mat-raised-button color="primary" (click)="resumeGame(g._id)">Score: {{ g.totalScore }} ({{ g.wordsCount }})</button>
+						<button mat-raised-button color="primary" (click)="deleteGame(g._id)">Löschen</button>
+					</div>
+				}
+			</div>
+		}
+	</div>
+
+	<div style="margin-top: 20px;">
+		<h3 style="text-align: center;">Beste 3 Spiele</h3>
+		@if (bestGames.length === 0) {
+			<p style="text-align: center;">Keine Spiele vorhanden.</p>
+		} @else {
+			<div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+				@for (g of bestGames; track g._id) {
+					<div style="width: 320px; display: flex; justify-content: space-between; gap: 8px;">
+						<button mat-raised-button color="primary" (click)="resumeGame(g._id)">Score: {{ g.totalScore }} ({{ g.wordsCount }})</button>
+						<button mat-raised-button color="primary" (click)="deleteGame(g._id)">Löschen</button>
+					</div>
+				}
+			</div>
+		}
+	</div>
+</div>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { nChars } from '@retter/api-interfaces';
 
 enum CharStrategy {
     Dice,
@@ -10,7 +11,7 @@ enum CharStrategy {
 })
 export class CharacterService {
     private characterList: string[] = [];
-    private readonly numberOfCharacters: number = 10;
+    private readonly numberOfCharacters: number = nChars;
 
     constructor() {
         this.characterList = this.generateCharacterList(this.numberOfCharacters, CharStrategy.Dice);
@@ -22,6 +23,16 @@ export class CharacterService {
      */
     getCharacterList(): string[] {
         return [...this.characterList];
+    }
+
+    setCharacterList(chars: string[]): void {
+        this.characterList = [...chars];
+    }
+
+    generateNewCharacterList(): string[] {
+        const chars = this.generateCharacterList(this.numberOfCharacters, CharStrategy.Dice);
+        this.characterList = [...chars];
+        return this.getCharacterList();
     }
 
     /**
@@ -57,7 +68,6 @@ export class CharacterService {
         ];
 
         const res = dice.map((die) => die[Math.floor(Math.random() * die.length)]);
-        if (res.includes('Q')) res.push('U');
 
         return res;
     }

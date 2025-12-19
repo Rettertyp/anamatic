@@ -1,9 +1,12 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Printable } from '../../util/printable.util';
 
 @Component({
     selector: 'app-wordbox',
+    standalone: true,
+    imports: [CommonModule],
     templateUrl: './wordbox.component.html',
     styleUrls: ['./wordbox.component.css'],
     animations: [

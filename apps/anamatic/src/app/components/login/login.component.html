@@ -7,3 +7,13 @@
     <mat-label>Password</mat-label>
     <input matInput placeholder="Password" [(ngModel)]="password" type="password">
 </mat-form-field>
+
+<div style="text-align: center; margin-top: 10px;">
+        <button mat-raised-button color="primary" (click)="submit()">Login</button>
+</div>
+
+@if (error) {
+    <div style="text-align: center; margin-top: 10px; color: red;">
+        {{ error }}
+    </div>
+}

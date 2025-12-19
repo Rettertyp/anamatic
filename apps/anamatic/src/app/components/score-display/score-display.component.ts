@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ScoreService } from '../../services/score.service';
 
 @Component({
     selector: 'app-score-display',
+    standalone: true,
+    imports: [CommonModule],
     templateUrl: './score-display.component.html',
     styleUrls: ['./score-display.component.css'],
 })

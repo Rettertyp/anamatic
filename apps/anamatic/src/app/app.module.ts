@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes, provideRouter } from '@angular/router';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -21,10 +22,13 @@ import { GameComponent } from './components/game/game.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { PersonalComponent } from './components/personal/personal.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 export const routes: Routes = [
     { path: '', component: MenuComponent },
+    { path: 'login', component: LoginComponent },
     { path: 'game', component: GameComponent },
+    { path: 'game/:gameId', component: GameComponent },
     { path: 'personal', component: PersonalComponent, children: [] },
 ];
 
@@ -50,10 +54,18 @@ export const routes: Routes = [
         BrowserAnimationsModule,
         FormsModule,
         MatInputModule,
+        MatButtonModule,
         HttpClientModule,
-        RouterModule,
+        RouterModule.forRoot(routes),
     ],
-    providers: [CharacterService, provideRouter(routes)],
+    providers: [
+        CharacterService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,9 +1,16 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, lastValueFrom, of, share, tap } from 'rxjs';
 import { environment } from '../environment/environment';
-import { LoginResponseDto, awakeAnswer, wordAnswer } from '@retter/api-interfaces';
-import { StorageService } from './storage.service';
+import {
+    GameDetailDto,
+    GameDto,
+    GameIdDto,
+    GameListItemDto,
+    LoginResponseDto,
+    awakeAnswer,
+    wordAnswer,
+} from '@retter/api-interfaces';
 
 @Injectable({
     providedIn: 'root',
@@ -17,18 +24,27 @@ export class ApiService {
     private apiIsAwake = false;
     private wakeUpObservable: Observable<awakeAnswer> | null = null;
 
-    constructor(private readonly http: HttpClient, private readonly storageService: StorageService) {}
+    constructor(private readonly http: HttpClient) {}
 
     /**
      * Checks a word on the DWDS API and returns the servers response.
      * @param word the word to check on the API
      * @returns the response object from the API
      */
-    getWord(word: string): Promise<wordAnswer> {
+    getWordPublic(word: string): Promise<wordAnswer> {
         return lastValueFrom(
             this.http.get<wordAnswer>(`${this.baseUrl}word/${word}`, {
                 headers: this.headers,
-                withCredentials: this.storageService.isLoggedIn(),
+                withCredentials: true,
+            })
+        );
+    }
+
+    getWordForGame(word: string, gameId: string): Promise<wordAnswer> {
+        return lastValueFrom(
+            this.http.get<wordAnswer>(`${this.baseUrl}word/${word}/${gameId}`, {
+                headers: this.headers,
+                withCredentials: true,
             })
         );
     }
@@ -65,20 +81,89 @@ export class ApiService {
      * @returns nothing, the
      */
     async login(username: string, password: string): Promise<LoginResponseDto> {
-        return (
-            await lastValueFrom(
-                this.http.post<HttpResponse<LoginResponseDto>>(
-                    `${this.baseUrl}auth/login`,
-                    {
-                        username,
-                        password,
-                    },
-                    {
-                        headers: this.headers,
-                        withCredentials: this.storageService.isLoggedIn(),
-                    }
-                )
+        return lastValueFrom(
+            this.http.post<LoginResponseDto>(
+                `${this.baseUrl}auth/login`,
+                {
+                    username,
+                    password,
+                },
+                {
+                    headers: this.headers,
+                    withCredentials: true,
+                }
             )
-        ).body as LoginResponseDto;
+        );
+    }
+
+    async refresh(): Promise<LoginResponseDto> {
+        return lastValueFrom(
+            this.http.get<LoginResponseDto>(`${this.baseUrl}auth/refresh`, {
+                headers: this.headers,
+                withCredentials: true,
+            })
+        );
+    }
+
+    async logout(): Promise<{ ok: boolean }> {
+        return lastValueFrom(
+            this.http.post<{ ok: boolean }>(
+                `${this.baseUrl}auth/logout`,
+                {},
+                {
+                    headers: this.headers,
+                    withCredentials: true,
+                }
+            )
+        );
+    }
+
+    async createGame(characters: string[]): Promise<GameIdDto> {
+        return lastValueFrom(
+            this.http.post<GameIdDto>(
+                `${this.baseUrl}game`,
+                { characters } as GameDto,
+                {
+                    headers: this.headers,
+                    withCredentials: true,
+                }
+            )
+        );
+    }
+
+    async deleteGame(gameId: string): Promise<void> {
+        await lastValueFrom(
+            this.http.delete(`${this.baseUrl}game/${gameId}`, {
+                headers: this.headers,
+                withCredentials: true,
+            })
+        );
+    }
+
+    async getBestGames(): Promise<GameListItemDto[]> {
+        return lastValueFrom(
+            this.http.get<GameListItemDto[]>(`${this.baseUrl}game/best`, {
+                headers: this.headers,
+                withCredentials: true,
+            })
+        );
+    }
+
+    async getLastGames(): Promise<GameListItemDto[]> {
+        return lastValueFrom(
+            this.http.get<GameListItemDto[]>(`${this.baseUrl}game/last`, {
+                headers: this.headers,
+                withCredentials: true,
+            })
+        );
+    }
+
+    async getGame(gameId: string): Promise<GameDetailDto> {
+        return lastValueFrom(
+            this.http.get<GameDetailDto>(`${this.baseUrl}game/${gameId}`, {
+                headers: this.headers,
+                withCredentials: true,
+            })
+        );
     }
 }

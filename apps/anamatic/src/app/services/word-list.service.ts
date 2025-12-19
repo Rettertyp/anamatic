@@ -40,7 +40,7 @@ export class WordListService {
      * @param word the word to add to the pending list
      */
     addToPending(word: string): void {
-        this.pendingWordsSubject.value.push(new Word(word));
+        this.pendingWordsSubject.next([...this.pendingWordsSubject.value, new Word(word)]);
     }
 
     /**
@@ -48,7 +48,9 @@ export class WordListService {
      * @param word the word to remove from the pending list
      */
     removeFromPending(word: string): void {
-        deleteWordFromArray(this.pendingWordsSubject.value, word);
+        const next = [...this.pendingWordsSubject.value];
+        deleteWordFromArray(next, word);
+        this.pendingWordsSubject.next(next);
     }
 
     /**
@@ -56,7 +58,7 @@ export class WordListService {
      * @param word the word to add to the correct list
      */
     addToCorrect(word: string, freq: number): void {
-        this.correctWordsSubject.value.push(new CorrectWord(word, freq));
+        this.correctWordsSubject.next([...this.correctWordsSubject.value, new CorrectWord(word, freq)]);
     }
 
     /**
@@ -64,6 +66,18 @@ export class WordListService {
      * @param word the word to add to the wrong list
      */
     addToWrong(word: string): void {
-        this.wrongWordsSubject.value.push(new Word(word));
+        this.wrongWordsSubject.next([...this.wrongWordsSubject.value, new Word(word)]);
+    }
+
+    resetAll(): void {
+        this.pendingWordsSubject.next([]);
+        this.correctWordsSubject.next([]);
+        this.wrongWordsSubject.next([]);
+    }
+
+    setCorrectWords(words: Array<{ word: string; points: number }>): void {
+        this.pendingWordsSubject.next([]);
+        this.wrongWordsSubject.next([]);
+        this.correctWordsSubject.next(words.map((w) => new CorrectWord(w.word, w.points)));
     }
 }

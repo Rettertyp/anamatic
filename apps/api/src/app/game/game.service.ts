@@ -8,7 +8,8 @@ import { GameIdDto } from '@retter/api-interfaces';
 
 @Injectable()
 export class GameService {
-    private readonly N_BEST = 10;
+    private readonly N_BEST = 3;
+    private readonly N_LAST = 3;
 
     constructor(@InjectModel(Game.name) private readonly gameModel: Model<Game>) {}
 
@@ -106,6 +107,14 @@ export class GameService {
      */
     async findBest(user: RequestUser): Promise<GameDocument[]> {
         return this.gameModel.find({ user: user._id }).sort({ totalScore: -1 }).limit(this.N_BEST).exec();
+    }
+
+    /**
+     * Finds the most recently created games for a user.
+     * Uses ObjectId ordering as a proxy for creation time.
+     */
+    async findLast(user: RequestUser): Promise<GameDocument[]> {
+        return this.gameModel.find({ user: user._id }).sort({ _id: -1 }).limit(this.N_LAST).exec();
     }
 
     /**
