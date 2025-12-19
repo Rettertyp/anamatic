@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { nChars } from '@retter/api-interfaces';
 
 enum CharStrategy {
@@ -10,11 +10,11 @@ enum CharStrategy {
     providedIn: 'root',
 })
 export class CharacterService {
-    private characterList: string[] = [];
+    characterList = signal<string[]>([]);
     private readonly numberOfCharacters: number = nChars;
 
     constructor() {
-        this.characterList = this.generateCharacterList(this.numberOfCharacters, CharStrategy.Dice);
+        this.characterList.set(this.generateCharacterList(this.numberOfCharacters, CharStrategy.Dice));
     }
 
     /**
@@ -22,16 +22,16 @@ export class CharacterService {
      * @returns copy of the character list
      */
     getCharacterList(): string[] {
-        return [...this.characterList];
+        return [...this.characterList()];
     }
 
     setCharacterList(chars: string[]): void {
-        this.characterList = [...chars];
+        this.characterList.set([...chars]);
     }
 
     generateNewCharacterList(): string[] {
         const chars = this.generateCharacterList(this.numberOfCharacters, CharStrategy.Dice);
-        this.characterList = [...chars];
+        this.characterList.set([...chars]);
         return this.getCharacterList();
     }
 

@@ -9,11 +9,12 @@ import { CharacterService } from '../../services/character.service';
 import { GameSessionService } from '../../services/game-session.service';
 import { ScoreService } from '../../services/score.service';
 import { WordListService } from '../../services/word-list.service';
+import { GameListComponent } from '../game-list/game-list.component';
 
 @Component({
     selector: 'app-personal',
     standalone: true,
-    imports: [CommonModule, MatButtonModule],
+    imports: [CommonModule, MatButtonModule, GameListComponent],
     templateUrl: './personal.component.html',
     styleUrl: './personal.component.css',
 })
@@ -43,7 +44,6 @@ export class PersonalComponent implements OnInit {
 
     async reloadLists(): Promise<void> {
         const [last, best] = await Promise.all([this.apiService.getLastGames(), this.apiService.getBestGames()]);
-        console.log('Loaded last games');
         this.lastGames = last;
         this.bestGames = best;
         this.cdr.detectChanges();
@@ -60,7 +60,6 @@ export class PersonalComponent implements OnInit {
 
     async resumeGame(gameId: string): Promise<void> {
         const game: GameDetailDto = await this.apiService.getGame(gameId);
-        console.log(game);
         this.characterService.setCharacterList(game.characters);
         this.gameSessionService.setGameId(game._id);
         this.wordListService.setCorrectWords(game.words);

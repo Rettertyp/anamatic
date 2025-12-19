@@ -48,6 +48,7 @@ export class GameComponent implements OnInit {
             this.scoreService.setScore(game.totalScore);
         } else {
             this.gameSessionService.setGameId(null);
+            this.characterService.generateNewCharacterList();
         }
 
         this.apiService.wakeUpServer().subscribe((answer) => {

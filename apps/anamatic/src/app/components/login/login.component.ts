@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,17 +17,17 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
     username = '';
     password = '';
-    error: string | null = null;
+    error = signal<string | null>(null);
 
     constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
     async submit(): Promise<void> {
-        this.error = null;
+        this.error.set(null);
         try {
             await this.authService.login(this.username, this.password);
             await this.router.navigate(['/personal']);
         } catch {
-            this.error = 'Login fehlgeschlagen';
+            this.error.set('Login fehlgeschlagen');
         }
     }
 }

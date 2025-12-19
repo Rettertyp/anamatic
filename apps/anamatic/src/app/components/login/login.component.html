@@ -1,19 +1,19 @@
 <mat-form-field appearance="fill">
     <mat-label>Username</mat-label>
-    <input matInput placeholder="Username" [(ngModel)]="username">
+    <input matInput placeholder="Username" [(ngModel)]="username" (keyup.enter)="submit()">
 </mat-form-field><br>
 
 <mat-form-field appearance="fill">
     <mat-label>Password</mat-label>
-    <input matInput placeholder="Password" [(ngModel)]="password" type="password">
+    <input matInput placeholder="Password" [(ngModel)]="password" type="password" (keyup.enter)="submit()">
 </mat-form-field>
 
 <div style="text-align: center; margin-top: 10px;">
-        <button mat-raised-button color="primary" (click)="submit()">Login</button>
+    <button mat-raised-button color="primary" (click)="submit()">Login</button>
 </div>
 
-@if (error) {
-    <div style="text-align: center; margin-top: 10px; color: red;">
-        {{ error }}
-    </div>
+@if (error()) {
+<div style="text-align: center; margin-top: 10px; color: red;">
+    {{ error() }}
+</div>
 }

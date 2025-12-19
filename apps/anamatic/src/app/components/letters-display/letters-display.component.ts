@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CharacterService } from '../../services/character.service';
 
@@ -9,12 +9,8 @@ import { CharacterService } from '../../services/character.service';
     templateUrl: './letters-display.component.html',
     styleUrls: ['./letters-display.component.css'],
 })
-export class LettersDisplayComponent implements OnInit {
-    letters: string[] = [];
+export class LettersDisplayComponent {
+    letters = this.characterService.characterList;
 
     constructor(private readonly characterService: CharacterService) {}
-
-    ngOnInit() {
-        this.letters = this.characterService.getCharacterList();
-    }
 }
