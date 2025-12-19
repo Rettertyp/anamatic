@@ -8,9 +8,23 @@ export default {
     testEnvironment: 'node',
     transform: {
         '^.+\\.[tj]s$': [
-            'ts-jest',
+            '@swc/jest',
             {
-                tsconfig: '<rootDir>/tsconfig.spec.json',
+                jsc: {
+                    parser: {
+                        syntax: 'typescript',
+                        decorators: true,
+                    },
+                    transform: {
+                        legacyDecorator: true,
+                        decoratorMetadata: true,
+                    },
+                    target: 'es2022',
+                },
+                module: {
+                    type: 'commonjs',
+                },
+                sourceMaps: 'inline',
             },
         ],
     },

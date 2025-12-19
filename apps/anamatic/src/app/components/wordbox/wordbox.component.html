@@ -1,7 +1,9 @@
 <div class="wrapper" [ngStyle]="getBorderColorStyle()">
   <div class="wordbox">
-    <div [@fadeInAndScale] *ngFor="let word of wordlist" class="wordbox-word" [ngStyle]="getBackgroundColorStyle()">
-      <span>{{ word.print() }}</span>
-    </div>
+    @for (word of wordlist; track word) {
+      <div [@fadeInAndScale] class="wordbox-word" [ngStyle]="getBackgroundColorStyle()">
+        <span>{{ word.print() }}</span>
+      </div>
+    }
   </div>
 </div>

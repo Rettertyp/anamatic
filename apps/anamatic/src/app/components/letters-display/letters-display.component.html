@@ -1,6 +1,8 @@
 <div class="container">
   <p>Finde Wörter, die aus den folgenden Buchstaben zusammengesetzt werden:</p>
   <div>
-    <div *ngFor="let letter of letters" class="box">{{ letter }}</div>
+    @for (letter of letters; track letter) {
+      <div class="box">{{ letter }}</div>
+    }
   </div>
 </div>

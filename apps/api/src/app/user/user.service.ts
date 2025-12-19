@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserWithId } from './user.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -20,6 +20,7 @@ export class UserService {
             throw new Error(`No user found with name ${name}`);
         }
 
-        return user.toObject();
+        const userObj = user.toObject() as User & { _id: Types.ObjectId };
+        return { ...userObj, _id: userObj._id.toString() };
     }
 }

@@ -16,7 +16,7 @@ You can play the game online at [https://rettertyp.github.io/play-anamatic/](htt
 In order to run the dev-environment, the following requirements should be installed:
 
 - [NodeJS](https://nodejs.org/en/download/)
-- [npm](https://www.npmjs.com/get-npm)
+- [Yarn](https://yarnpkg.com/) (recommended via Corepack)
 - [ESLint](https://eslint.org/)
 - [prettier](https://prettier.io/)
 
@@ -25,7 +25,7 @@ In order to run the dev-environment, the following requirements should be instal
 1. Install all dependencies:
 
 ```sh
-npm i
+yarn install
 ```
 
 2. Start the dev-environment (watches for file changes):
@@ -33,17 +33,17 @@ npm i
 - To serve both backend and frontend concurrently:
 
 ```sh
-npm run start
+yarn start
 ```
 
 - To serve only the frontend:
 
 ```sh
-npm run start:frontend
+yarn start:frontend
 ```
 
 - To serve only the backend:
 
 ```sh
-npm run start:backend
+yarn start:backend
 ```

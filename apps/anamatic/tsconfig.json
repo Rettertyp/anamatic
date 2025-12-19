@@ -2,13 +2,14 @@
     "compilerOptions": {
         "outDir": "../../dist/out-tsc",
         "forceConsistentCasingInFileNames": true,
-        // "strict": true,
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "downlevelIteration": true,
-        "useDefineForClassFields": false
+        "useDefineForClassFields": false,
+        "moduleResolution": "bundler",
+        "module": "preserve"
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
