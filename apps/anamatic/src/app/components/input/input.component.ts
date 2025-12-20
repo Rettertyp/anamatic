@@ -6,7 +6,6 @@ import { GameService } from '../../services/game.service';
 
 @Component({
     selector: 'app-input',
-    standalone: true,
     imports: [FormsModule, MatFormFieldModule, MatInputModule],
     templateUrl: './input.component.html',
     styleUrls: ['./input.component.css'],

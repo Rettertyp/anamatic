@@ -5,7 +5,6 @@ import { GameListItemDto } from '@retter/api-interfaces';
 
 @Component({
     selector: 'app-game-list',
-    standalone: true,
     imports: [CommonModule, MatButtonModule],
     templateUrl: './game-list.component.html',
     styleUrl: './game-list.component.css',

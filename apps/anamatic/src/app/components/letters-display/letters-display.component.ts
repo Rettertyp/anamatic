@@ -4,7 +4,6 @@ import { CharacterService } from '../../services/character.service';
 
 @Component({
     selector: 'app-letters-display',
-    standalone: true,
     imports: [CommonModule],
     templateUrl: './letters-display.component.html',
     styleUrls: ['./letters-display.component.css'],

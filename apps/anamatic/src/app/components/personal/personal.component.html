@@ -8,11 +8,15 @@
 		<button class="button login-button" mat-raised-button color="primary" (click)="logout()">Logout</button>
 	</div>
 
+	@if (lastGames$ | async; as lastGames) {
 	<app-game-list title="Letzte 3 Spiele" [games]="lastGames" (resume)="resumeGame($event)"
 		(delete)="deleteGame($event)">
 	</app-game-list>
+	}
 
+	@if (bestGames$ | async; as bestGames) {
 	<app-game-list title="Beste 3 Spiele" [games]="bestGames" (resume)="resumeGame($event)"
 		(delete)="deleteGame($event)">
 	</app-game-list>
+	}
 </div>

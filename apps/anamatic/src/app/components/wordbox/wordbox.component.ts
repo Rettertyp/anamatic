@@ -5,7 +5,6 @@ import { Printable } from '../../util/printable.util';
 
 @Component({
     selector: 'app-wordbox',
-    standalone: true,
     imports: [CommonModule],
     templateUrl: './wordbox.component.html',
     styleUrls: ['./wordbox.component.css'],

@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
-import { GameDetailDto, GameListItemDto } from '@retter/api-interfaces';
+import { GameDetailDto } from '@retter/api-interfaces';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { CharacterService } from '../../services/character.service';
@@ -10,17 +10,25 @@ import { GameSessionService } from '../../services/game-session.service';
 import { ScoreService } from '../../services/score.service';
 import { WordListService } from '../../services/word-list.service';
 import { GameListComponent } from '../game-list/game-list.component';
+import { startWith, Subject, switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-personal',
-    standalone: true,
     imports: [CommonModule, MatButtonModule, RouterLink, GameListComponent],
     templateUrl: './personal.component.html',
     styleUrl: './personal.component.css',
 })
 export class PersonalComponent implements OnInit {
-    lastGames: GameListItemDto[] | undefined = undefined;
-    bestGames: GameListItemDto[] | undefined = undefined;
+    private readonly refresh$ = new Subject<void>();
+
+    lastGames$ = this.refresh$.pipe(
+        startWith(void 0),
+        switchMap(() => this.apiService.getLastGames())
+    );
+    bestGames$ = this.refresh$.pipe(
+        startWith(void 0),
+        switchMap(() => this.apiService.getBestGames())
+    );
 
     constructor(
         private readonly apiService: ApiService,
@@ -29,8 +37,7 @@ export class PersonalComponent implements OnInit {
         private readonly gameSessionService: GameSessionService,
         private readonly scoreService: ScoreService,
         private readonly wordListService: WordListService,
-        private readonly router: Router,
-        private readonly cdr: ChangeDetectorRef
+        private readonly router: Router
     ) {}
 
     async ngOnInit(): Promise<void> {
@@ -38,15 +45,10 @@ export class PersonalComponent implements OnInit {
             await this.router.navigate(['/']);
             return;
         }
-
-        await this.reloadLists();
     }
 
-    async reloadLists(): Promise<void> {
-        const [last, best] = await Promise.all([this.apiService.getLastGames(), this.apiService.getBestGames()]);
-        this.lastGames = last;
-        this.bestGames = best;
-        this.cdr.detectChanges();
+    private reloadLists(): void {
+        this.refresh$.next();
     }
 
     async newGame(): Promise<void> {
@@ -69,7 +71,7 @@ export class PersonalComponent implements OnInit {
 
     async deleteGame(gameId: string): Promise<void> {
         await this.apiService.deleteGame(gameId);
-        await this.reloadLists();
+        this.reloadLists();
     }
 
     async logout(): Promise<void> {

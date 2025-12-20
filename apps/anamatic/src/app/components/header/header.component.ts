@@ -5,7 +5,6 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-header',
-    standalone: true,
     imports: [RouterModule, MatButtonModule],
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css'],

@@ -137,22 +137,18 @@ export class ApiService {
         );
     }
 
-    async getBestGames(): Promise<GameListItemDto[]> {
-        return lastValueFrom(
-            this.http.get<GameListItemDto[]>(`${this.baseUrl}game/best`, {
-                headers: this.headers,
-                withCredentials: true,
-            })
-        );
+    getBestGames(): Observable<GameListItemDto[]> {
+        return this.http.get<GameListItemDto[]>(`${this.baseUrl}game/best`, {
+            headers: this.headers,
+            withCredentials: true,
+        });
     }
 
-    async getLastGames(): Promise<GameListItemDto[]> {
-        return lastValueFrom(
-            this.http.get<GameListItemDto[]>(`${this.baseUrl}game/last`, {
-                headers: this.headers,
-                withCredentials: true,
-            })
-        );
+    getLastGames(): Observable<GameListItemDto[]> {
+        return this.http.get<GameListItemDto[]>(`${this.baseUrl}game/last`, {
+            headers: this.headers,
+            withCredentials: true,
+        });
     }
 
     async getGame(gameId: string): Promise<GameDetailDto> {

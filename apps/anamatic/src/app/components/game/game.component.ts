@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
@@ -14,13 +14,12 @@ import { WordDisplayComponent } from '../word-display/word-display.component';
 
 @Component({
     selector: 'app-game',
-    standalone: true,
     imports: [CommonModule, LettersDisplayComponent, ScoreDisplayComponent, InputComponent, WordDisplayComponent],
     templateUrl: './game.component.html',
     styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
-    serverIsAwake = false;
+    serverIsAwake = signal(false);
 
     constructor(
         private readonly apiService: ApiService,
@@ -52,7 +51,7 @@ export class GameComponent implements OnInit {
         }
 
         this.apiService.wakeUpServer().subscribe((answer) => {
-            this.serverIsAwake = answer.awake;
+            this.serverIsAwake.set(answer.awake);
         });
     }
 }

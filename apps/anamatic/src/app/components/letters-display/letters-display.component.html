@@ -1,7 +1,7 @@
 <div class="container">
   <p>Finde Wörter, die aus den folgenden Buchstaben zusammengesetzt werden:</p>
   <div>
-    @for (letter of letters(); track letter) {
+    @for (letter of letters(); track $index) {
     <div class="box">{{ letter }}</div>
     }
   </div>
