@@ -9,7 +9,7 @@
         "build": {
             "executor": "@angular-devkit/build-angular:browser",
             "options": {
-                "outputPath": "dist/anamatic",
+                "outputPath": "dist/apps/anamatic",
                 "index": "apps/anamatic/src/index.html",
                 "main": "apps/anamatic/src/main.ts",
                 "polyfills": ["zone.js"],
