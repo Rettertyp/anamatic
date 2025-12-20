@@ -265,35 +265,3 @@ h1 {
         flex: 1;
     }
 }
-
-.score {
-    font-size: 28px;
-    font-weight: bold;
-    color: #1976d2;
-    min-width: 80px;
-    text-align: right;
-}
-
-.no-games {
-    padding: 40px;
-    text-align: center;
-    color: #999;
-    font-style: italic;
-}
-
-.back-button {
-    display: block;
-    margin: 30px auto 0;
-    padding: 12px 30px;
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.back-button:hover {
-    background-color: #1565c0;
-}

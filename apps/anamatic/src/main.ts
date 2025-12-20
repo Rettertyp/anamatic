@@ -1,4 +1,3 @@
-import 'zone.js'; // Ensure default change detection runs after async tasks
 import { bootstrapApplication } from '@angular/platform-browser';
 
 import { AppComponent } from './app/app.component';

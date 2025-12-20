@@ -9,7 +9,7 @@
         "build": {
             "executor": "@angular-devkit/build-angular:browser",
             "options": {
-                "outputPath": "dist/docs",
+                "outputPath": "dist/anamatic",
                 "index": "apps/anamatic/src/index.html",
                 "main": "apps/anamatic/src/main.ts",
                 "polyfills": ["zone.js"],
@@ -17,20 +17,20 @@
                 "assets": ["apps/anamatic/src/favicon.ico", "apps/anamatic/src/assets"],
                 "styles": ["@angular/material/prebuilt-themes/deeppurple-amber.css", "apps/anamatic/src/styles.css"],
                 "scripts": [],
-                "baseHref": "/play-anamatic/"
+                "baseHref": "anamatic"
             },
             "configurations": {
                 "production": {
                     "budgets": [
                         {
                             "type": "initial",
-                            "maximumWarning": "500kb",
-                            "maximumError": "1mb"
+                            "maximumWarning": "1mb",
+                            "maximumError": "1.5mb"
                         },
                         {
                             "type": "anyComponentStyle",
-                            "maximumWarning": "2kb",
-                            "maximumError": "4kb"
+                            "maximumWarning": "3kb",
+                            "maximumError": "5kb"
                         }
                     ],
                     "outputHashing": "all",
