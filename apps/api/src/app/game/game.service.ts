@@ -8,8 +8,8 @@ import { GameIdDto } from '@retter/api-interfaces';
 
 @Injectable()
 export class GameService {
-    private readonly N_BEST = 3;
-    private readonly N_LAST = 3;
+    private readonly N_BEST = 4;
+    private readonly N_LAST = 6;
 
     constructor(@InjectModel(Game.name) private readonly gameModel: Model<Game>) {}
 

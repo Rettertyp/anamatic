@@ -1,24 +1,58 @@
-.container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  position: relative;
+.header {
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
+    /* margin-bottom: 2rem; */
 }
 
-.container > * {
-  flex: 1 0 100%;
-  max-width: 100%;
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-.textbox {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.logo {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.top-right {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.logo:hover {
+    opacity: 0.8;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: absolute;
+    right: 1.5rem;
+}
+
+.profile-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.profile-button:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.profile-button mat-icon {
+    color: white;
 }

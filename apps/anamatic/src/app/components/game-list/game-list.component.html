@@ -1,16 +1,45 @@
-<div style="margin-top: 20px;">
-    <h3 style="text-align: center;">{{ title() }}</h3>
+<div class="game-list-section">
+    <h3 class="section-title">{{ title() }}</h3>
+
     @if (games() === undefined) {
-    <p style="text-align: center;">Laden...</p>
+    <div class="loading-state card">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+        <p>Laden...</p>
+    </div>
     } @else if (games()!.length === 0) {
-    <p style="text-align: center;">Keine Spiele vorhanden.</p>
+    <div class="empty-state card">
+        <mat-icon class="empty-icon">inbox</mat-icon>
+        <p>Keine Spiele vorhanden.</p>
+    </div>
     } @else {
-    <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+    <div class="games-grid">
         @for (g of games(); track g._id) {
-        <div style="width: 320px; display: flex; justify-content: space-between; gap: 8px;">
-            <button mat-raised-button color="primary" (click)="onResumeGame(g._id)">Score: {{ g.totalScore }} ({{
-                g.wordsCount }} Worte)</button>
-            <button mat-raised-button color="primary" (click)="onDeleteGame(g._id)">Löschen</button>
+        <div class="game-card card">
+            <div class="game-info">
+                <div class="score-badge">
+                    <span class="score-value">{{ g.totalScore }}</span>
+                    <span class="score-label">Punkte</span>
+                </div>
+                <div class="game-details">
+                    <div class="words-info">
+                        <mat-icon class="info-icon">chat_bubble</mat-icon>
+                        <span>{{ g.wordsCount }} Worte</span>
+                    </div>
+                    <div class="characters-info">
+                        <span class="characters">{{ g.characters.join(' ') }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-actions">
+                <button mat-raised-button color="primary" class="resume-button" (click)="onResumeGame(g._id)">
+                    <mat-icon>play_arrow</mat-icon>
+                    Fortsetzen
+                </button>
+                <button mat-icon-button color="warn" class="delete-button" (click)="onDeleteGame(g._id)"
+                    matTooltip="Löschen">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
         </div>
         }
     </div>

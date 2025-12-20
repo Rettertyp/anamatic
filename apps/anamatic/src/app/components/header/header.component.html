@@ -1,13 +1,15 @@
-<div class="container">
-  <div class="textbox">
-    <h1 routerLink="/">Anamatic</h1>
-  </div>
+<header class="header">
+  <div class="header-content">
+    <h1 class="logo" routerLink="/">Anamatic</h1>
 
-  <div class="top-right">
-    @if (!authService.isLoggedIn()) {
-    <button mat-raised-button color="primary" routerLink="/login">Login</button>
-    } @else {
-    <button mat-raised-button color="primary" routerLink="/personal">Profil</button>
-    }
+    <div class="header-actions">
+      @if (!authService.isLoggedIn()) {
+      <button mat-raised-button color="primary" routerLink="/login">Login</button>
+      } @else {
+      <button mat-icon-button class="profile-button" routerLink="/personal" matTooltip="Profil">
+        <mat-icon>person</mat-icon>
+      </button>
+      }
+    </div>
   </div>
-</div>
+</header>

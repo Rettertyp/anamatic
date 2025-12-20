@@ -1,13 +1,17 @@
 .wrapper {
-    margin-right: auto;
-    margin-left: auto;
-
-    max-width: 1200px;
-    padding: 15px;
-
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+}
 
-    /* background-color: red; */
+app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+router-outlet + * {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }

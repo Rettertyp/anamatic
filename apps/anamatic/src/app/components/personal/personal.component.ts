@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { GameDetailDto } from '@retter/api-interfaces';
 import { ApiService } from '../../services/api.service';
@@ -14,7 +15,7 @@ import { startWith, Subject, switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-personal',
-    imports: [CommonModule, MatButtonModule, RouterLink, GameListComponent],
+    imports: [CommonModule, MatButtonModule, MatIconModule, RouterLink, GameListComponent],
     templateUrl: './personal.component.html',
     styleUrl: './personal.component.css',
 })

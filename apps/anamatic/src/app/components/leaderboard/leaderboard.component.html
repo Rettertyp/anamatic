@@ -1,37 +1,57 @@
 <div class="leaderboard-container">
-    <h1>Leaderboard</h1>
-    <p class="subtitle">Beste 10 Spiele</p>
+    <div class="leaderboard-header">
+        <h1>Bestenliste</h1>
+        <p class="subtitle">Top 10 Spiele aller Spieler</p>
+    </div>
 
     @if (leaderboard$ | async; as leaderboard) {
     @if (leaderboard === null) {
-    <div class="loading">Loading leaderboard...</div>
+    <div class="loading card">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+        <p>Lade Bestenliste...</p>
+    </div>
     } @else {
     <div class="leaderboard-list">
         @for (entry of leaderboard; track $index) {
-        <div class="leaderboard-entry">
-            <div class="rank">{{ $index + 1 }}</div>
+        <div class="leaderboard-entry card">
+            <div class="rank-badge">
+                <span class="rank">{{ $index + 1 }}</span>
+            </div>
             <div class="entry-details">
                 <div class="username">{{ entry.username }}</div>
                 <div class="game-info">
-                    <span class="characters">{{ entry.characters.join('') }}</span>
+                    <span class="characters">{{ entry.characters.join(' ') }}</span>
                     <span class="words-count">{{ entry.wordsCount }} Worte</span>
                 </div>
             </div>
-            <div class="score">{{ entry.totalScore }}</div>
-            <button mat-raised-button color="accent" (click)="challenge(entry.characters)">Challenge</button>
+            <div class="score-section">
+                <div class="score">{{ entry.totalScore }}</div>
+                <button mat-raised-button color="accent" class="challenge-button" (click)="challenge(entry.characters)">
+                    <mat-icon>emoji_events</mat-icon>
+                    Herausfordern
+                </button>
+            </div>
         </div>
         }
 
         @if (leaderboard.length === 0) {
-        <div class="no-games">
-            Bisher wurden noch keine Spiele gespielt. Los geht's!
+        <div class="no-games card">
+            <mat-icon class="empty-icon">sports_esports</mat-icon>
+            <p>Bisher wurden noch keine Spiele gespielt.</p>
+            <p class="subtitle">Sei der Erste und stelle einen neuen Rekord auf!</p>
         </div>
         }
     </div>
     }
     } @else {
-    <div class="error">Fehler beim Laden der Bestenliste.</div>
+    <div class="error card">
+        <mat-icon class="error-icon">error_outline</mat-icon>
+        <p>Fehler beim Laden der Bestenliste.</p>
+    </div>
     }
 
-    <button class="back-button" (click)="goBack()">Zurück</button>
+    <button class="back-button" mat-raised-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Zurück
+    </button>
 </div>

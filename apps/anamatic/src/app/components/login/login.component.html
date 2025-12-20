@@ -1,19 +1,29 @@
-<mat-form-field appearance="fill">
-    <mat-label>Username</mat-label>
-    <input matInput placeholder="Username" [(ngModel)]="username" (keyup.enter)="submit()">
-</mat-form-field><br>
+<div class="login-container">
+    <div class="login-card card">
+        <h2 class="login-title">Anmelden</h2>
+        <p class="login-subtitle">Melde dich an, um deine Spiele zu speichern</p>
 
-<mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
-    <input matInput placeholder="Password" [(ngModel)]="password" type="password" (keyup.enter)="submit()">
-</mat-form-field>
+        <form class="login-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Username</mat-label>
+                <input matInput placeholder="Username" [(ngModel)]="username" name="username" (keyup.enter)="submit()">
+            </mat-form-field>
 
-<div style="text-align: center; margin-top: 10px;">
-    <button mat-raised-button color="primary" (click)="submit()">Login</button>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="Password" [(ngModel)]="password" name="password" type="password"
+                    (keyup.enter)="submit()">
+            </mat-form-field>
+
+            @if (error()) {
+            <div class="error-message">
+                {{ error() }}
+            </div>
+            }
+
+            <button class="login-button" mat-raised-button color="primary" (click)="submit()" type="button">
+                Anmelden
+            </button>
+        </form>
+    </div>
 </div>
-
-@if (error()) {
-<div style="text-align: center; margin-top: 10px; color: red;">
-    {{ error() }}
-</div>
-}

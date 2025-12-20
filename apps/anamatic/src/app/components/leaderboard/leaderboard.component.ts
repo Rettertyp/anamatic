@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { CharacterService } from '../../services/character.service';
@@ -11,7 +12,7 @@ import { WordListService } from '../../services/word-list.service';
 
 @Component({
     selector: 'app-leaderboard',
-    imports: [CommonModule, MatButtonModule],
+    imports: [CommonModule, MatButtonModule, MatIconModule],
     templateUrl: './leaderboard.component.html',
     styleUrls: ['./leaderboard.component.css'],
 })

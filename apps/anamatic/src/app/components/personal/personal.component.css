@@ -1,0 +1,60 @@
+.personal-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.welcome-section {
+    text-align: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.welcome-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 1.5rem 0;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.action-button {
+    min-width: 180px;
+    height: 48px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem !important;
+}
+
+.action-button mat-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.logout-button {
+    background-color: var(--text-secondary) !important;
+}
+
+.logout-button:hover {
+    background-color: var(--text-primary) !important;
+}
+
+@media (max-width: 640px) {
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}
