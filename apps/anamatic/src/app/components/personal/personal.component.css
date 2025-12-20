@@ -41,6 +41,7 @@
 }
 
 .logout-button {
+    color: white !important;
     background-color: var(--text-secondary) !important;
 }
 

@@ -64,8 +64,21 @@ export class Game {
      */
     @Prop({ type: Number, default: 0, min: 0 })
     totalScore: number;
+
+    /**
+     * The timestamp when the game was last played.
+     * Automatically updated when the game is saved.
+     */
+    @Prop({ type: Date, default: Date.now })
+    lastPlayed: Date;
 }
 
 export type GameDocument = HydratedDocument<Game>;
 
 export const GameSchema = SchemaFactory.createForClass(Game);
+
+// Middleware to update lastPlayed timestamp on save
+GameSchema.pre('save', function (next) {
+    this.lastPlayed = new Date();
+    next();
+});

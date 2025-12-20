@@ -8,8 +8,10 @@ import { GameIdDto } from '@retter/api-interfaces';
 
 @Injectable()
 export class GameService {
-    private readonly N_BEST = 4;
-    private readonly N_LAST = 6;
+    private readonly N_BEST_SHOWN = 4;
+    private readonly N_BEST_KEPT = 50;
+    private readonly N_LAST_SHOWN = 6;
+    private readonly N_LAST_KEPT = 100;
 
     constructor(@InjectModel(Game.name) private readonly gameModel: Model<Game>) {}
 
@@ -50,6 +52,10 @@ export class GameService {
         try {
             const game = new this.gameModel({ user: user._id, characters, words: [] });
             await game.save();
+
+            // Clean up old games after creating a new one
+            await this.cleanupOldGames(user);
+
             return { _id: game._id.toString() };
         } catch (error) {
             throw new BadRequestException(`The game does not fit the schema!`);
@@ -106,15 +112,15 @@ export class GameService {
      * @returns A promise that resolves to an array of GameDocument objects.
      */
     async findBest(user: RequestUser): Promise<GameDocument[]> {
-        return this.gameModel.find({ user: user._id }).sort({ totalScore: -1 }).limit(this.N_BEST).exec();
+        return this.gameModel.find({ user: user._id }).sort({ totalScore: 'desc' }).limit(this.N_BEST_SHOWN).exec();
     }
 
     /**
-     * Finds the most recently created games for a user.
-     * Uses ObjectId ordering as a proxy for creation time.
+     * Finds the most recently played games for a user.
+     * Sorted by lastPlayed timestamp in descending order.
      */
     async findLast(user: RequestUser): Promise<GameDocument[]> {
-        return this.gameModel.find({ user: user._id }).sort({ _id: -1 }).limit(this.N_LAST).exec();
+        return this.gameModel.find({ user: user._id }).sort({ lastPlayed: 'desc' }).limit(this.N_LAST_SHOWN).exec();
     }
 
     /**
@@ -135,5 +141,42 @@ export class GameService {
         if (!game.user.equals(user._id)) {
             throw new UnauthorizedException(`Game with id ${game._id} does not belong to user ${user.name}`);
         }
+    }
+
+    /**
+     * Cleans up old games for a user, keeping only:
+     * - Best 10 games (by totalScore)
+     * - Last 20 games (by lastPlayed)
+     * @param user - The user object.
+     */
+    private async cleanupOldGames(user: RequestUser): Promise<void> {
+        // Get best 10 games by score
+        const bestGames = await this.gameModel
+            .find({ user: user._id })
+            .sort({ totalScore: -1 })
+            .limit(this.N_BEST_KEPT)
+            .select('_id')
+            .exec();
+
+        // Get last 20 games by lastPlayed
+        const lastGames = await this.gameModel
+            .find({ user: user._id })
+            .sort({ lastPlayed: -1 })
+            .limit(this.N_LAST_KEPT)
+            .select('_id')
+            .exec();
+
+        // Combine IDs to keep (union of both sets)
+        const idsToKeep = new Set<string>();
+        bestGames.forEach((game) => idsToKeep.add(game._id.toString()));
+        lastGames.forEach((game) => idsToKeep.add(game._id.toString()));
+
+        // Delete all games that are not in the idsToKeep set
+        await this.gameModel
+            .deleteMany({
+                user: user._id,
+                _id: { $nin: Array.from(idsToKeep).map((id) => new Types.ObjectId(id)) },
+            })
+            .exec();
     }
 }
