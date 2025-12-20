@@ -44,3 +44,22 @@ export class GameListItemDto extends GameDto {
 export class GameDetailDto extends GameDto {
     words: CorrectWordDto[];
 }
+
+/** Leaderboard entry with user info. */
+export class LeaderboardEntryDto {
+    @IsMongoId()
+    _id: string;
+
+    @IsString()
+    username: string;
+
+    @IsArray()
+    @ArrayMinSize(nChars)
+    @ArrayMaxSize(nChars)
+    @IsString({ each: true })
+    @Length(1, 1, { each: true })
+    characters: string[];
+
+    totalScore: number;
+    wordsCount: number;
+}

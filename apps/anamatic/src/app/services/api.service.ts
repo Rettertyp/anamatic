@@ -7,6 +7,7 @@ import {
     NewGameDto,
     GameIdDto,
     GameListItemDto,
+    LeaderboardEntryDto,
     LoginResponseDto,
     awakeAnswer,
     wordAnswer,
@@ -161,5 +162,12 @@ export class ApiService {
                 withCredentials: true,
             })
         );
+    }
+
+    getLeaderboard(): Observable<LeaderboardEntryDto[]> {
+        return this.http.get<LeaderboardEntryDto[]>(`${this.baseUrl}game/leaderboard`, {
+            headers: this.headers,
+            withCredentials: true,
+        });
     }
 }

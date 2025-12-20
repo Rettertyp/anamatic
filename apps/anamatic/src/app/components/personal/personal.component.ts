@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GameDetailDto, GameListItemDto } from '@retter/api-interfaces';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -14,7 +14,7 @@ import { GameListComponent } from '../game-list/game-list.component';
 @Component({
     selector: 'app-personal',
     standalone: true,
-    imports: [CommonModule, MatButtonModule, GameListComponent],
+    imports: [CommonModule, MatButtonModule, RouterLink, GameListComponent],
     templateUrl: './personal.component.html',
     styleUrl: './personal.component.css',
 })

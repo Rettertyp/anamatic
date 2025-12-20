@@ -29,7 +29,7 @@ export class WordListService {
      * @param word the word to add to the pending list
      */
     addToPending(word: string): void {
-        this.pendingWords.update((words) => [...words, new Word(word)]);
+        this.pendingWords.update((words) => [...words, new Word(word)].sort((a, b) => a.word.localeCompare(b.word)));
     }
 
     /**
@@ -49,7 +49,9 @@ export class WordListService {
      * @param word the word to add to the correct list
      */
     addToCorrect(word: string, freq: number): void {
-        this.correctWords.update((words) => [...words, new CorrectWord(word, freq)]);
+        this.correctWords.update((words) =>
+            [...words, new CorrectWord(word, freq)].sort((a, b) => a.word.localeCompare(b.word))
+        );
     }
 
     /**
@@ -57,7 +59,7 @@ export class WordListService {
      * @param word the word to add to the wrong list
      */
     addToWrong(word: string): void {
-        this.wrongWords.update((words) => [...words, new Word(word)]);
+        this.wrongWords.update((words) => [...words, new Word(word)].sort((a, b) => a.word.localeCompare(b.word)));
     }
 
     resetAll(): void {
@@ -69,6 +71,8 @@ export class WordListService {
     setCorrectWords(words: Array<{ word: string; points: number }>): void {
         this.pendingWords.set([]);
         this.wrongWords.set([]);
-        this.correctWords.set(words.map((w) => new CorrectWord(w.word, w.points)));
+        this.correctWords.set(
+            words.map((w) => new CorrectWord(w.word, w.points)).sort((a, b) => a.word.localeCompare(b.word))
+        );
     }
 }

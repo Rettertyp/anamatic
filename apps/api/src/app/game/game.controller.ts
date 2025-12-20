@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { GameDetailDto, NewGameDto, GameListItemDto } from '@retter/api-interfaces';
+import { GameDetailDto, NewGameDto, GameListItemDto, LeaderboardEntryDto } from '@retter/api-interfaces';
 import { User } from '../auth/user.decorator';
 import { RequestUser } from '../user/user.schema';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -51,6 +51,22 @@ export class GameController {
                         wordsCount: g.words.length,
                     } as GameListItemDto)
             )
+        );
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('leaderboard')
+    async getLeaderboard() {
+        const games = await this.gameService.findGlobalLeaderboard();
+        return games.map(
+            (g) =>
+                ({
+                    _id: g._id.toString(),
+                    username: (g.user as any).name,
+                    characters: g.characters,
+                    totalScore: g.totalScore,
+                    wordsCount: g.words.length,
+                } as LeaderboardEntryDto)
         );
     }
 

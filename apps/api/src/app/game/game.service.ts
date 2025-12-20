@@ -118,6 +118,14 @@ export class GameService {
     }
 
     /**
+     * Finds the global top 10 games across all users.
+     * @returns A promise that resolves to an array of games with populated user information.
+     */
+    async findGlobalLeaderboard(): Promise<GameDocument[]> {
+        return this.gameModel.find().populate('user').sort({ totalScore: -1 }).limit(10).exec();
+    }
+
+    /**
      * Checks if a game belongs to a specific user.
      * @param user - The user object.
      * @param game - The game object.

@@ -12,7 +12,7 @@ export class WordService {
 
     constructor(private readonly httpService: HttpService, private readonly gameService: GameService) {}
 
-    private readonly dwdsUrl = 'https://www.dwds.de/api/';
+    private readonly dwdsUrl = 'https://www.dwds.de/api';
 
     /**
      * Wakes up the server.
@@ -24,32 +24,13 @@ export class WordService {
 
     /**
      * Checks if the word exists in the DWDS database and returns the frequency of the word.
+     * If gameId and user are provided, adds the word to the game.
      * @param word The word to check.
+     * @param gameId Optional game ID to add the word to.
+     * @param user Optional user making the request.
      * @returns The frequency of the word / false if the word does not exist.
      */
-    async checkWord(word: string): Promise<wordAnswer> {
-        // check if the word exists
-        const wordExists = await this.checkWordExists(word);
-
-        if (!wordExists) return { wordExists: false };
-
-        // check the frequency of the word
-        const frequency = await this.getWordFrequency(word);
-
-        return {
-            wordExists: true,
-            points: this.calculatePoints(word, frequency),
-        } as wordAnswer;
-    }
-
-    /**
-     * Checks a word with a given game ID. If the word exists, it is added to the game.
-     * @param word - The word to check.
-     * @param gameId - The ID of the game.
-     * @param user - The user making the request.
-     * @returns A promise that resolves to a wordAnswer object.
-     */
-    async checkWordWithGameId(word: string, gameId: string, user: RequestUser): Promise<wordAnswer> {
+    async checkWord(word: string, gameId?: string, user?: RequestUser): Promise<wordAnswer> {
         // check if the word exists
         const wordExists = await this.checkWordExists(word);
 
@@ -59,13 +40,15 @@ export class WordService {
         const frequency: number = await this.getWordFrequency(word);
         const points: number = this.calculatePoints(word, frequency);
 
-        // add the word to the game
-        await this.gameService.addWord(user, gameId, word, points);
+        // add the word to the game if gameId and user are provided
+        if (gameId && user) {
+            await this.gameService.addWord(user, gameId, word, points);
+        }
 
         return {
-            wordExists: true,
-            points: points,
-        } as wordAnswer;
+            wordExists,
+            points,
+        };
     }
 
     /**
@@ -74,9 +57,11 @@ export class WordService {
      * @returns A promise that resolves to a boolean indicating whether the word exists or not.
      */
     private async checkWordExists(word: string): Promise<boolean> {
+        if (word.length < 2) return false;
+
         // check if the word exists
         const dwdsExistsData: dwdsWordbankAnswer[] = (
-            await lastValueFrom(this.httpService.get(`${this.dwdsUrl}wb/snippet/`, { params: { q: word } }))
+            await lastValueFrom(this.httpService.get(`${this.dwdsUrl}/wb/snippet/`, { params: { q: word } }))
         ).data;
 
         // if (dwdsExistsData.length === 0)
@@ -91,7 +76,7 @@ export class WordService {
     private async getWordFrequency(word: string): Promise<number> {
         // check the frequency of the word
         const dwdsFrequencyData: dwdsFrequencyAnswer = (
-            await lastValueFrom(this.httpService.get(`${this.dwdsUrl}frequency/`, { params: { q: word } }))
+            await lastValueFrom(this.httpService.get(`${this.dwdsUrl}/frequency/`, { params: { q: word } }))
         ).data;
 
         return dwdsFrequencyData.frequency;

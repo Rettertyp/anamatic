@@ -37,6 +37,6 @@ export class WordController {
         @Param('gameId', ObjectIdValidationPipe) gameId: string,
         @User() user: RequestUser
     ) {
-        return this.wordService.checkWordWithGameId(word, gameId, user);
+        return this.wordService.checkWord(word, gameId, user);
     }
 }

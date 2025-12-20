@@ -1,0 +1,28 @@
+<div class="leaderboard-container">
+    <h1>Global Leaderboard</h1>
+    <p class="subtitle">Top 10 Games Ever Played</p>
+
+    <div *ngIf="loading" class="loading">Loading leaderboard...</div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!loading && !error" class="leaderboard-list">
+        <div *ngFor="let entry of leaderboard; let i = index" class="leaderboard-entry">
+            <div class="rank">{{ i + 1 }}</div>
+            <div class="entry-details">
+                <div class="username">{{ entry.username }}</div>
+                <div class="game-info">
+                    <span class="characters">{{ entry.characters.join('') }}</span>
+                    <span class="words-count">{{ entry.wordsCount }} words</span>
+                </div>
+            </div>
+            <div class="score">{{ entry.totalScore }}</div>
+        </div>
+
+        <div *ngIf="leaderboard.length === 0" class="no-games">
+            No games have been played yet. Be the first!
+        </div>
+    </div>
+
+    <button class="back-button" (click)="goBack()">Back to Menu</button>
+</div>
