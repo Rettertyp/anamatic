@@ -16,7 +16,8 @@
                 "tsConfig": "apps/anamatic/tsconfig.app.json",
                 "assets": ["apps/anamatic/src/favicon.ico", "apps/anamatic/src/assets"],
                 "styles": ["@angular/material/prebuilt-themes/deeppurple-amber.css", "apps/anamatic/src/styles.css"],
-                "scripts": []
+                "scripts": [],
+                "baseHref": "anamatic"
             },
             "configurations": {
                 "production": {
