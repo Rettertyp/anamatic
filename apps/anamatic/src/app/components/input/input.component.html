@@ -2,6 +2,6 @@
   <mat-form-field appearance="fill">
     <mat-label>Eingabe</mat-label>
     <input matInput [(ngModel)]="inputValue" autocapitalize="none" (keyup.enter)="onEnter()" name="input"
-      class="input-text" />
+      class="input-text" #wordInput />
   </mat-form-field>
 </form>
