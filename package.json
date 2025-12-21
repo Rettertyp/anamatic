@@ -7,7 +7,7 @@
         "start": "concurrently --names \"Frontend,Backend\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn start:frontend\" \"yarn start:backend\" --prefix \"[{time} - {name}]\" --timestamp-format \"HH:mm:ss.SSS\"",
         "start:frontend": "nx serve anamatic",
         "start:backend": "nx serve api",
-        "build:frontend": "nx build anamatic",
+        "build:frontend": "nx build anamatic --base-href=/anamatic/",
         "build:backend": "nx build api",
         "server:backend": "node dist/apps/api/main.js",
         "watch": "nx build --watch --configuration development",

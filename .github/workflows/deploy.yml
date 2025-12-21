@@ -30,7 +30,7 @@ jobs:
               run: yarn install --frozen-lockfile
 
             - name: Build Angular app
-              run: yarn nx build anamatic --configuration=production
+              run: yarn build:frontend
 
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4
