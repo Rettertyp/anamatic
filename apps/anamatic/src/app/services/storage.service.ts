@@ -6,33 +6,32 @@ const USER_KEY = 'auth-user';
     providedIn: 'root',
 })
 /**
- * Service for managing session storage.
+ * Service for managing local storage for authentication.
  */
 export class StorageService {
     constructor() {}
 
     /**
-     * Clears the session storage.
+     * Clears the local storage.
      */
     public clean() {
-        window.sessionStorage.clear();
+        window.localStorage.removeItem(USER_KEY);
     }
 
     /**
-     * Saves the user object to the session storage.
+     * Saves the user object to the local storage.
      * @param user - The user object to be saved.
      */
     public saveUser(user: { access_token: string }) {
-        window.sessionStorage.removeItem(USER_KEY);
-        window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+        window.localStorage.setItem(USER_KEY, JSON.stringify(user));
     }
 
     /**
-     * Retrieves the user object from the session storage.
-     * @returns The user object if it exists, otherwise an empty object.
+     * Retrieves the user object from the local storage.
+     * @returns The user object if it exists, otherwise null.
      */
     public getUser(): { access_token: string } | null {
-        const user = window.sessionStorage.getItem(USER_KEY);
+        const user = window.localStorage.getItem(USER_KEY);
         if (user) {
             return JSON.parse(user);
         }
