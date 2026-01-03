@@ -56,3 +56,14 @@
 .profile-button mat-icon {
     color: white;
 }
+
+.profile-button:disabled {
+    background-color: rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.26);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.profile-button:disabled mat-icon {
+    color: rgba(0, 0, 0, 0.26);
+}
