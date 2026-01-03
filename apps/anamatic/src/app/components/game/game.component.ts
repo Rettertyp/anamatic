@@ -11,6 +11,8 @@ import { LettersDisplayComponent } from '../letters-display/letters-display.comp
 import { ScoreDisplayComponent } from '../score-display/score-display.component';
 import { InputComponent } from '../input/input.component';
 import { WordDisplayComponent } from '../word-display/word-display.component';
+import { GameService } from '../../services/game.service';
+import { BackendStatusService } from '../../services/backend-status.service';
 
 @Component({
     selector: 'app-game',
@@ -19,39 +21,29 @@ import { WordDisplayComponent } from '../word-display/word-display.component';
     styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
-    serverIsAwake = signal(false);
+    serverIsAwake = this.backendStatusService.isAwake;
 
     constructor(
-        private readonly apiService: ApiService,
         private readonly authService: AuthService,
         private readonly gameSessionService: GameSessionService,
         private readonly characterService: CharacterService,
-        private readonly wordListService: WordListService,
-        private readonly scoreService: ScoreService,
         private readonly route: ActivatedRoute,
-        private readonly router: Router
+        private readonly gameService: GameService,
+        private readonly backendStatusService: BackendStatusService
     ) {}
 
     async ngOnInit() {
-        const gameId = this.route.snapshot.paramMap.get('gameId');
+        const gameId = this.route.snapshot.paramMap.get('gameId') || this.gameSessionService.gameId;
 
-        if (this.authService.isLoggedIn()) {
+        if (this.backendStatusService.isAwake() && this.authService.isLoggedIn()) {
             if (!gameId) {
-                await this.router.navigate(['/personal']);
-                return;
+                await this.gameService.newGame();
+            } else {
+                await this.gameService.resumeGame(gameId);
             }
-            this.gameSessionService.setGameId(gameId);
-            const game = await this.apiService.getGame(gameId);
-            this.characterService.setCharacterList(game.characters);
-            this.wordListService.setCorrectWords(game.words);
-            this.scoreService.setScore(game.totalScore);
         } else {
             this.gameSessionService.setGameId(null);
             this.characterService.generateNewCharacterList();
         }
-
-        this.apiService.wakeUpServer().subscribe((answer) => {
-            this.serverIsAwake.set(answer.awake);
-        });
     }
 }

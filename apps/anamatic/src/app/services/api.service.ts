@@ -11,13 +11,15 @@ import {
     LoginResponseDto,
     awakeAnswer,
     wordAnswer,
+    BatchWordCheckDto,
+    BatchWordCheckResponseDto,
 } from '@retter/api-interfaces';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApiService {
-    private readonly baseUrl = environment.production ? 'https://anamatic.onrender.com/api/' : '/api/';
+    private readonly baseUrl = environment.production ? 'https://anamatic.onrender.com/api' : '/api';
     private readonly headers = new HttpHeaders({
         'Content-Type': 'application/json',
     });
@@ -34,7 +36,7 @@ export class ApiService {
      */
     getWordPublic(word: string): Promise<wordAnswer> {
         return lastValueFrom(
-            this.http.get<wordAnswer>(`${this.baseUrl}word/${word}`, {
+            this.http.get<wordAnswer>(`${this.baseUrl}/word/${word}`, {
                 headers: this.headers,
                 withCredentials: true,
             })
@@ -43,7 +45,7 @@ export class ApiService {
 
     getWordForGame(word: string, gameId: string): Promise<wordAnswer> {
         return lastValueFrom(
-            this.http.get<wordAnswer>(`${this.baseUrl}word/${word}/${gameId}`, {
+            this.http.get<wordAnswer>(`${this.baseUrl}/word/${word}/${gameId}`, {
                 headers: this.headers,
                 withCredentials: true,
             })
@@ -66,7 +68,7 @@ export class ApiService {
         }
 
         // If the server is not awake, wake it up and return the observable.
-        return this.http.get<awakeAnswer>(`${this.baseUrl}word/wake-up`).pipe(
+        return this.http.get<awakeAnswer>(`${this.baseUrl}/word/wake-up`).pipe(
             tap(() => {
                 this.apiIsAwake = true;
                 this.wakeUpObservable = null;
@@ -84,7 +86,7 @@ export class ApiService {
     async login(username: string, password: string): Promise<LoginResponseDto> {
         return lastValueFrom(
             this.http.post<LoginResponseDto>(
-                `${this.baseUrl}auth/login`,
+                `${this.baseUrl}/auth/login`,
                 {
                     username,
                     password,
@@ -99,7 +101,7 @@ export class ApiService {
 
     async refresh(): Promise<LoginResponseDto> {
         return lastValueFrom(
-            this.http.get<LoginResponseDto>(`${this.baseUrl}auth/refresh`, {
+            this.http.get<LoginResponseDto>(`${this.baseUrl}/auth/refresh`, {
                 headers: this.headers,
                 withCredentials: true,
             })
@@ -109,7 +111,7 @@ export class ApiService {
     async logout(): Promise<{ ok: boolean }> {
         return lastValueFrom(
             this.http.post<{ ok: boolean }>(
-                `${this.baseUrl}auth/logout`,
+                `${this.baseUrl}/auth/logout`,
                 {},
                 {
                     headers: this.headers,
@@ -121,7 +123,7 @@ export class ApiService {
 
     async createGame(characters: string[]): Promise<GameIdDto> {
         return lastValueFrom(
-            this.http.post<GameIdDto>(`${this.baseUrl}game`, { characters } as NewGameDto, {
+            this.http.post<GameIdDto>(`${this.baseUrl}/game`, { characters } as NewGameDto, {
                 headers: this.headers,
                 withCredentials: true,
             })
@@ -130,7 +132,7 @@ export class ApiService {
 
     async deleteGame(gameId: string): Promise<void> {
         await lastValueFrom(
-            this.http.delete(`${this.baseUrl}game/${gameId}`, {
+            this.http.delete(`${this.baseUrl}/game/${gameId}`, {
                 headers: this.headers,
                 withCredentials: true,
             })
@@ -138,14 +140,14 @@ export class ApiService {
     }
 
     getBestGames(): Observable<GameListItemDto[]> {
-        return this.http.get<GameListItemDto[]>(`${this.baseUrl}game/best`, {
+        return this.http.get<GameListItemDto[]>(`${this.baseUrl}/game/best`, {
             headers: this.headers,
             withCredentials: true,
         });
     }
 
     getLastGames(): Observable<GameListItemDto[]> {
-        return this.http.get<GameListItemDto[]>(`${this.baseUrl}game/last`, {
+        return this.http.get<GameListItemDto[]>(`${this.baseUrl}/game/last`, {
             headers: this.headers,
             withCredentials: true,
         });
@@ -153,7 +155,7 @@ export class ApiService {
 
     async getGame(gameId: string): Promise<GameDetailDto> {
         return lastValueFrom(
-            this.http.get<GameDetailDto>(`${this.baseUrl}game/${gameId}`, {
+            this.http.get<GameDetailDto>(`${this.baseUrl}/game/${gameId}`, {
                 headers: this.headers,
                 withCredentials: true,
             })
@@ -161,9 +163,41 @@ export class ApiService {
     }
 
     getLeaderboard(): Observable<LeaderboardEntryDto[]> {
-        return this.http.get<LeaderboardEntryDto[]>(`${this.baseUrl}game/leaderboard`, {
+        return this.http.get<LeaderboardEntryDto[]>(`${this.baseUrl}/game/leaderboard`, {
             headers: this.headers,
             withCredentials: true,
         });
+    }
+
+    /**
+     * Checks the backend status.
+     * @returns Promise resolving to backend status
+     */
+    async checkStatus(timeout?: number): Promise<awakeAnswer> {
+        return lastValueFrom(
+            this.http.get<awakeAnswer>(`${this.baseUrl}/status/`, {
+                headers: this.headers,
+                timeout,
+            })
+        );
+    }
+
+    /**
+     * Checks multiple words in batch and adds them to a game.
+     * @param words Array of words to check
+     * @param gameId The game ID to add the words to
+     * @returns Promise resolving to batch word check response
+     */
+    async batchCheckWords(words: string[], gameId: string): Promise<BatchWordCheckResponseDto> {
+        return lastValueFrom(
+            this.http.post<BatchWordCheckResponseDto>(
+                `${this.baseUrl}/word/batch/${gameId}`,
+                { words } as BatchWordCheckDto,
+                {
+                    headers: this.headers,
+                    withCredentials: true,
+                }
+            )
+        );
     }
 }

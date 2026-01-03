@@ -74,7 +74,12 @@ export class AuthService {
      * @returns A Promise that resolves to the new access token
      */
     async refresh(refreshPayload: JwtPayload): Promise<string> {
-        return this.jwtService.signAsync(refreshPayload);
+        // Create a fresh payload without the exp property from the refresh token
+        const accessPayload: JwtPayload = {
+            sub: refreshPayload.sub,
+            username: refreshPayload.username,
+        };
+        return this.jwtService.signAsync(accessPayload);
     }
 
     /**

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,11 +15,14 @@ export class InputComponent implements AfterViewInit {
 
     @ViewChild('wordInput') wordInput!: ElementRef<HTMLInputElement>;
 
-    constructor(private readonly gameService: GameService) {}
+    constructor(private readonly gameService: GameService, private readonly cdr: ChangeDetectorRef) {}
 
     ngAfterViewInit(): void {
-        // Automatically focus the input field when component loads
-        this.wordInput.nativeElement.focus();
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+            this.wordInput.nativeElement.focus();
+            this.cdr.detectChanges();
+        });
     }
 
     async onEnter(): Promise<void> {

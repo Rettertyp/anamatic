@@ -1,21 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GameSessionService {
-    private readonly gameIdSubject = new BehaviorSubject<string | null>(null);
-
-    get gameId$(): Observable<string | null> {
-        return this.gameIdSubject.asObservable();
-    }
+    private readonly gameIdSignal = signal<string | null>(null);
 
     get gameId(): string | null {
-        return this.gameIdSubject.value;
+        return this.gameIdSignal();
     }
 
     setGameId(gameId: string | null): void {
-        this.gameIdSubject.next(gameId);
+        this.gameIdSignal.set(gameId);
     }
 }

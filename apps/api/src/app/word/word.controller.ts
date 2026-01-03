@@ -1,23 +1,16 @@
-import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Param, UseGuards, Post, Body } from '@nestjs/common';
 import { WordService } from './word.service';
 import { RequestUser } from '../user/user.schema';
 import { User } from '../auth/user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ObjectIdValidationPipe } from '../util/mongoObjectId.pipe';
+import { BatchWordCheckDto } from '@retter/api-interfaces';
 
 @Controller('word')
 export class WordController {
     private readonly _log = new Logger(WordController.name);
 
     constructor(private readonly wordService: WordService) {}
-
-    /**
-     * Wakes up the server.
-     */
-    @Get('wake-up')
-    wakeUpServer() {
-        return this.wordService.wakeUpServer();
-    }
 
     /**
      * Checks if a word exists in the word bank. For users that are not logged in.
@@ -38,5 +31,18 @@ export class WordController {
         @User() user: RequestUser
     ) {
         return this.wordService.checkWord(word, gameId, user);
+    }
+
+    /**
+     * Checks multiple words and adds them to the game. For users that are logged in.
+     */
+    @UseGuards(JwtAuthGuard)
+    @Post('batch/:gameId')
+    checkWordsInBatch(
+        @Body() dto: BatchWordCheckDto,
+        @Param('gameId', ObjectIdValidationPipe) gameId: string,
+        @User() user: RequestUser
+    ) {
+        return this.wordService.checkWordsInBatch(dto.words, gameId, user);
     }
 }

@@ -12,6 +12,7 @@ import { ScoreService } from '../../services/score.service';
 import { WordListService } from '../../services/word-list.service';
 import { GameListComponent } from '../game-list/game-list.component';
 import { startWith, Subject, switchMap } from 'rxjs';
+import { GameService } from '../../services/game.service';
 
 @Component({
     selector: 'app-personal',
@@ -38,7 +39,8 @@ export class PersonalComponent implements OnInit {
         private readonly gameSessionService: GameSessionService,
         private readonly scoreService: ScoreService,
         private readonly wordListService: WordListService,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly gameService: GameService
     ) {}
 
     async ngOnInit(): Promise<void> {
@@ -53,25 +55,15 @@ export class PersonalComponent implements OnInit {
     }
 
     async newGame(): Promise<void> {
-        const chars = this.characterService.generateNewCharacterList();
-        const created = await this.apiService.createGame(chars);
-        this.gameSessionService.setGameId(created._id);
-        this.wordListService.resetAll();
-        this.scoreService.reset();
-        await this.router.navigate(['/game', created._id]);
+        await this.gameService.newGame();
     }
 
     async resumeGame(gameId: string): Promise<void> {
-        const game: GameDetailDto = await this.apiService.getGame(gameId);
-        this.characterService.setCharacterList(game.characters);
-        this.gameSessionService.setGameId(game._id);
-        this.wordListService.setCorrectWords(game.words);
-        this.scoreService.setScore(game.totalScore);
-        await this.router.navigate(['/game', game._id]);
+        await this.gameService.resumeGame(gameId);
     }
 
     async deleteGame(gameId: string): Promise<void> {
-        await this.apiService.deleteGame(gameId);
+        await this.gameService.deleteGame(gameId);
         this.reloadLists();
     }
 

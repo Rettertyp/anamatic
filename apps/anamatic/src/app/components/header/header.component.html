@@ -3,10 +3,18 @@
     <h1 class="logo" routerLink="/">Anamatic</h1>
 
     <div class="header-actions">
+      @if (!backendStatus.isAwake()) {
+      <mat-spinner diameter="24"></mat-spinner>
+      }
       @if (!authService.isLoggedIn()) {
-      <button mat-raised-button color="primary" routerLink="/login">Login</button>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button mat-raised-button color="primary" routerLink="/login" [disabled]="!backendStatus.isAwake()">
+          Login
+        </button>
+      </div>
       } @else {
-      <button mat-icon-button class="profile-button" routerLink="/personal" matTooltip="Profil">
+      <button mat-icon-button class="profile-button" routerLink="/personal" matTooltip="Profil"
+        [disabled]="!backendStatus.isAwake()">
         <mat-icon>person</mat-icon>
       </button>
       }

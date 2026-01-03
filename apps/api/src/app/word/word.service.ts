@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { dwdsFrequencyAnswer, dwdsWordbankAnswer } from '../../assets/types';
 import { lastValueFrom } from 'rxjs';
-import { awakeAnswer, wordAnswer } from '@retter/api-interfaces';
+import { wordAnswer, BatchWordCheckResponseDto } from '@retter/api-interfaces';
 import { RequestUser } from '../user/user.schema';
 import { GameService } from '../game/game.service';
 
@@ -13,14 +13,6 @@ export class WordService {
     constructor(private readonly httpService: HttpService, private readonly gameService: GameService) {}
 
     private readonly dwdsUrl = 'https://www.dwds.de/api';
-
-    /**
-     * Wakes up the server.
-     * @returns true
-     */
-    wakeUpServer(): awakeAnswer {
-        return { awake: true };
-    }
 
     /**
      * Checks if the word exists in the DWDS database and returns the frequency of the word.
@@ -91,5 +83,23 @@ export class WordService {
         const sum = word.length + (6 - wordFrequency) / 2;
 
         return Math.floor((sum * (sum + 1)) / 4);
+    }
+
+    /**
+     * Checks multiple words and adds them to the game.
+     * @param words Array of words to check.
+     * @param gameId Game ID to add the words to.
+     * @param user User making the request.
+     * @returns Array of word answers.
+     */
+    async checkWordsInBatch(words: string[], gameId: string, user: RequestUser): Promise<BatchWordCheckResponseDto> {
+        const results: BatchWordCheckResponseDto = [];
+
+        for (const word of words) {
+            const answer = await this.checkWord(word, gameId, user);
+            results.push({ word, answer });
+        }
+
+        return results;
     }
 }
