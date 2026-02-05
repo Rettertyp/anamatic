@@ -23,7 +23,7 @@ export class AuthController {
             secure: isProd,
             sameSite: isProd ? 'none' : 'lax',
             path: '/api',
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 3 days in milliseconds
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
         });
         res.json({ access_token: accessToken, username: req.user.name } as LoginResponseDto);
     }
