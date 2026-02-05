@@ -32,6 +32,8 @@ export class PersonalComponent implements OnInit {
         switchMap(() => this.apiService.getBestGames())
     );
 
+    username: string | null = null;
+
     constructor(
         private readonly apiService: ApiService,
         private readonly authService: AuthService,
@@ -48,6 +50,7 @@ export class PersonalComponent implements OnInit {
             await this.router.navigate(['/']);
             return;
         }
+        this.username = this.authService.getUsername();
     }
 
     private reloadLists(): void {

@@ -1,6 +1,6 @@
 <div class="personal-container">
 	<div class="welcome-section card">
-		<h2 class="welcome-title">Willkommen zurück!</h2>
+		<h2 class="welcome-title">Willkommen zurück{{ username ? ', ' + username : '' }}!</h2>
 
 		<div class="action-buttons">
 			<button class="action-button" mat-raised-button color="primary" (click)="newGame()">
