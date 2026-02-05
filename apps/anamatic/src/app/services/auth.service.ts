@@ -24,7 +24,10 @@ export class AuthService {
 
     async login(username: string, password: string): Promise<void> {
         const res = await this.apiService.login(username, password);
-        this.storageService.saveUser({ access_token: res.access_token, username: res.username });
+        this.storageService.saveUser({
+            access_token: res.access_token,
+            username: res.username ?? username,
+        });
         this.loggedInSignal.set(true);
     }
 
