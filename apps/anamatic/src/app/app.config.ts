@@ -10,13 +10,16 @@ import { AuthService } from './services/auth.service';
 /**
  * Initializer function that attempts to refresh the access token on app startup.
  * This allows users to stay logged in across browser sessions using the refresh token cookie.
+ * Uses a short timeout to avoid blocking page load if backend is not responsive.
  */
 function initializeAuth(authService: AuthService) {
     return async () => {
         try {
-            await authService.refreshAccessToken();
+            // Use a short timeout (3 seconds) to avoid blocking page load if backend is cold-starting
+            await authService.refreshAccessToken(3000);
         } catch {
-            // User is not logged in or refresh token is invalid/expired, nothing to do
+            // User is not logged in or refresh token is invalid/expired, or backend is not responsive yet
+            // Nothing to do - the page will load and show backend status indicator if needed
         }
     };
 }

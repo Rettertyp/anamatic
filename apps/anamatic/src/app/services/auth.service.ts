@@ -23,8 +23,8 @@ export class AuthService {
         this.loggedInSignal.set(true);
     }
 
-    async refreshAccessToken(): Promise<string> {
-        const res = await this.apiService.refresh();
+    async refreshAccessToken(timeout?: number): Promise<string> {
+        const res = await this.apiService.refresh(timeout);
         this.storageService.saveUser({ access_token: res.access_token });
         this.loggedInSignal.set(true);
         return res.access_token;

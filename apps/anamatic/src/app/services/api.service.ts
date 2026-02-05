@@ -99,11 +99,12 @@ export class ApiService {
         );
     }
 
-    async refresh(): Promise<LoginResponseDto> {
+    async refresh(timeout?: number): Promise<LoginResponseDto> {
         return lastValueFrom(
             this.http.get<LoginResponseDto>(`${this.baseUrl}/auth/refresh`, {
                 headers: this.headers,
                 withCredentials: true,
+                timeout,
             })
         );
     }
