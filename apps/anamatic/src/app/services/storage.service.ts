@@ -22,7 +22,7 @@ export class StorageService {
      * Saves the user object to the local storage.
      * @param user - The user object to be saved.
      */
-    public saveUser(user: { access_token: string }) {
+    public saveUser(user: { access_token: string; username?: string }) {
         window.localStorage.setItem(USER_KEY, JSON.stringify(user));
     }
 
@@ -30,7 +30,7 @@ export class StorageService {
      * Retrieves the user object from the local storage.
      * @returns The user object if it exists, otherwise null.
      */
-    public getUser(): { access_token: string } | null {
+    public getUser(): { access_token: string; username?: string } | null {
         const user = window.localStorage.getItem(USER_KEY);
         if (user) {
             return JSON.parse(user);

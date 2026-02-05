@@ -17,9 +17,14 @@ export class AuthService {
         return user?.access_token ?? null;
     }
 
+    getUsername(): string | null {
+        const user = this.storageService.getUser();
+        return user?.username ?? null;
+    }
+
     async login(username: string, password: string): Promise<void> {
         const res = await this.apiService.login(username, password);
-        this.storageService.saveUser({ access_token: res.access_token });
+        this.storageService.saveUser({ access_token: res.access_token, username: res.username });
         this.loggedInSignal.set(true);
     }
 

@@ -25,7 +25,7 @@ export class AuthController {
             path: '/api',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 3 days in milliseconds
         });
-        res.json({ access_token: accessToken } as LoginResponseDto);
+        res.json({ access_token: accessToken, username: req.user.name } as LoginResponseDto);
     }
 
     @Public()
